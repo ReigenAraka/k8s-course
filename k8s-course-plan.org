@@ -18,14 +18,55 @@
   时间安排: 45min(讲解) + 15min(答疑)
   作业形式: 问卷与实际操作
 * 课程内容
-** 1.什么是 kubernetes <2019-12-06 Fri>
+** 1.了解 kubernetes 之前<2019-12-06 Fri>
 *** 课程大纲
 - [ ] 简介 docker 与 container
 - [ ] docker 与虚拟机的区别
 - [ ] 认识什么是 kubernetes
 - [ ] 了解 kubernetes 有哪些组件
 - [ ] 简介 kubernetes 内的对象与资源
-** 2.部署你的第一个 kubernetes 集群 <2019-12-13 Fri>
+*** Cgroup、Container 与 Docker
+**** Cgroup cgroups v2
+**** Container 的前世今生
+**** Docker Podman lxc Pounch
+**** 一个 Docker 镜像是怎么变为运行中的容器的
+*** Docker 与虚拟机
+**** 主流虚拟机的原理
+**** Docker 与虚拟机的异同
+*** kubernetes 是什么
+**** swarm mesos kubernetes 的演变
+**** kubernetes 特点与优点
+*** kubernetes 家族、生态、趋势
+**** kubernetes 常用网络与存储
+**** kubernetes 衍生品
+**** kubernetes 趋势
+** 2.初识 kubernetes
+*** kubernetes 的组件
+**** kubelet
+**** api-server
+**** kube-controller
+**** scheduler
+**** kube-proxy
+**** etcd
+**** core-dns
+*** kubernetes 的资源
+**** pod
+**** deployment
+**** service
+**** statefulset
+**** daemonset
+**** comfigmap
+**** cronjob
+**** job
+**** ingress
+**** nodes
+**** namespace
+**** secrets
+**** rbac
+**** pv pvc storageclass
+**** endpoints
+**** events
+** 3.部署你的第一个 kubernetes 集群
 *** 课程大纲
 - [ ] 部署一个三个节点的 kubernetes 集群
 - [ ] 在 kubernetes 集群上部署一个经典的微服务程序
