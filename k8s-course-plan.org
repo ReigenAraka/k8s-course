@@ -1,0 +1,34 @@
+#+OPTIONS: ^:nil
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+#+TITLE: K8s course
+#+AUTHOR: Byron Wang
+#+EMAIL: boyan.wang@zilliz.com
+* 课程目的
+  - 可以独立安装 k8s 集群
+  - 可以简单运维 k8s 集群
+  - 了解 k8s 组件与代码结构
+  - 对云计算及生态有初步认识
+  - 具备通过 ckad 的能力
+** 进阶要求
+  - 可以实现一个 CNI/CRD/CCM
+  - 成为 k8s contributor
+* 课程安排
+  地点:会议室
+  时间:每周五下午 16:00-17:00
+  时间安排: 45min(讲解) + 15min(答疑)
+  作业形式: 问卷与实际操作
+* 课程内容
+** 1.什么是 kubernetes <2019-12-06 Fri>
+*** 课程大纲
+- [ ] 简介 docker 与 container
+- [ ] docker 与虚拟机的区别
+- [ ] 认识什么是 kubernetes
+- [ ] 了解 kubernetes 有哪些组件
+- [ ] 简介 kubernetes 内的对象与资源
+** 2.部署你的第一个 kubernetes 集群 <2019-12-13 Fri>
+*** 课程大纲
+- [ ] 部署一个三个节点的 kubernetes 集群
+- [ ] 在 kubernetes 集群上部署一个经典的微服务程序
+- [ ] 了解 kubernetes 的 yaml 格式与写法
+- [ ] 了解 kubectl 的命令
+- [ ] 通过使用 kubectl 修改 yaml 完成对 deploy 与 service 的修改
