@@ -20,27 +20,150 @@
 * 课程内容
 ** 1.了解 kubernetes 之前<2019-12-06 Fri>
 *** 课程大纲
+- [ ] 操作系统基础
 - [ ] 简介 docker 与 container
 - [ ] docker 与虚拟机的区别
 - [ ] 认识什么是 kubernetes
-- [ ] 了解 kubernetes 有哪些组件
-- [ ] 简介 kubernetes 内的对象与资源
-*** Cgroup、Container 与 Docker
-**** Cgroup cgroups v2
+*** Cgroup、Container 与 OCI
+**** cgroups & namespaces & chroot & systemd
+cgroups[fn:1-1] 用来控制一个每个服务的 CPU、mem、block I/O、device、net(tc)
+
+namespaces[fn:1-2] 用来做进程之间的隔离;UTS:主机 域名 IPC: 信号量 消息队列 共享内存 PID Network:设备 端口 网络栈 Mount: fs User:group user
+
+chroot[fn:1-4] 用于将一个进程及其子进程的根目录改变到文件系统中的一个新位置，让这些进程只能访问到该目录。这个功能的想法是为每个进程提供独立的磁盘空间
+
+systemd[fn:1-5] 用来启动守护进程,处理依赖关系
 **** Container 的前世今生
-**** Docker Podman lxc Pounch
-**** 一个 Docker 镜像是怎么变为运行中的容器的
+- 1979 — chroot 一切的开始
+- 2000 — FreeBSD Jails 支持进程沙盒
+- 2001 — Linux VServer  加入 security context
+- 2004 — Solaris Containers 支持在 x86 和 SPARC 系统
+- 2005 — OpenVZ      IPC 与设备的隔离
+- 2006 — Process Containers kernel 2.6.24
+- 2008 — LXC 第一个最完善的 Linux 容器管理器的实现方案;现在容器技术的雏形
+- 2011 — Warde CloudFoundry 支持多个操作系统
+- 2013 — LMCTFY Let Me Contain That For You  Google libcontainer 的前身
+- 2013 — Docker images swarm 集大成者
+- 2014 — Rocket CoreOS
+- 2016 — Windows Containers Hyper-v
+- 2017 — Pouch 富容器 Alibaba
+- 2018 — Podman without of daemon
+- 2018 — WIndows Containers Windows-base
+**** OCI
+open container initiative[fn:1-7]
+
+Linux 基金会制定一个开放的工业化标准：容器运行时标准 （runtime spec）和 容器镜像标准（image spec）
+- image spec
+  文件系统
+  manifest 文件
+  index 文件
+- runtime spec
+  Container ID
+  PID
+  容器文件目录
+  容器创建
+  容器进程启动
+  容器暂停
+  容器暂停信号捕获
+  容器的生命周期: init creating created running stopped
+**** docker 中容器的创建
+[[file:images/docker-runc.png]]
 *** Docker 与虚拟机
 **** 主流虚拟机的原理
-**** Docker 与虚拟机的异同
+***** 虚拟化技术
+- I型虚拟机
+  直接跑在裸机上，虚拟机软件模拟了完整的底层硬件;从 Cpu、时钟到外接设备
+
+  代表技术 VMwareESX  Hyper-V
+- II型虚拟机
+  运行在宿主机的操作系统之上,所有的操作都借助于宿主机的操作系统
+
+  代表技术: VMWare Workstation Hyper-V
+**** 容器与虚拟机
+容器本身是虚拟化技术中的一种,作为最轻量级的虚拟化方案出现
+
+但容器与虚拟机有本质上的区别
+
+容器实际上是一个进程，而虚拟机则是一个完整的操作系统
 *** kubernetes 是什么
-**** swarm mesos kubernetes 的演变
-**** kubernetes 特点与优点
-*** kubernetes 家族、生态、趋势
-**** kubernetes 常用网络与存储
-**** kubernetes 衍生品
-**** kubernetes 趋势
+Production-Grade Container Scheduling and Management
+这是 kubernetes github 仓库上对这个项目的描述
+**** 我们为什么需要编排
+我们不妨了解一下小明的故事
+***** 小明是一个开发者
+      小明是一个开发者，这一天他想到了一个点子，他做了一个静态的网站，现在他想把网站上线。
+      于是他将代码拷贝到了租赁的服务器上运行，因为他有三个服务器，他不想每次都把改动传递很多次.
+
+      于是他想到了 Docker,他写了一个 Dockerfile 将网站打包成了 Docker 镜像，传到了镜像仓库，
+      他每次只要到三个服务器上更新容器的镜像就好了
+***** 小明的网站提供其他的服务了
+      小明的网站提供其他的服务了，小明的网站现在不仅仅是一个静态页面了，现在小明需要爬取一些数据，然后展示出来，
+      于是小明现在有两个服务：一个展示网站，一个用来爬取数据的服务。
+      小明遇到了问题:展示网站怎么连接到爬取数据的服务上，
+
+      于是小明将容器暴露了相应的端口用于内部服务的访问
+***** 小明的业务又扩展了
+      小明的业务又扩展了，小明现在需要将爬取所有的数据存下来，放便做统计与查询。
+
+      小明将本地的目录挂载到了容器目录中，于是所有的数据就都保存在了本地。
+***** 小明的业务发展的特别迅速
+      小明的业务发展的特别迅速，他有了几十倍的用户了，原有的三台服务器无法承受过大的压力，于是小明又多租了 17 台服务器，
+      这时小明遇到了几个问题：每一台机器存储的数据无法同步，而且现在每做一次改动都要改动到 20 台服务器上，小明觉得太麻烦了
+
+      于是小明将几台机器做成了 NFS 的服务器，然后所有的容器都挂载 NFS 的目录进行存储，又使用了一些批量处理工具。小明对自己很满意。
+***** 小明的服务间歇性的被冲跨了
+      小明的服务间歇性的被冲跨了，小明突然发现自己的服务在每天晚上凌晨左右会有几台被巨大的请求冲垮，小明现在无力负担起更多的服务器了，
+      小明只能运营商处购买负载均衡服务，试图将流量均匀的分配到不同的机器上。这样过了几天，小明发现有许多用户抱怨内容出现丢失了，
+      小明经过排查发现，由于 DNS 的原因之前的每个用户一般都被会到特定的几台机器上，由于 NFS 挂载的不是相同的目录，造成目录之间数据
+      不一致。现在用户的请求统一经过运营商的负载均衡，导致用户的内容丢失。在加上运营商机器并不是很稳定，导致服务器经常失连。
+      小明已经陷入了深深的运维漩涡当中，小明不想再维护了。
+**** kubernetes 的历史
+     kubernetes 由 Google 内部的编排系统 Borg 演化出来
+     2014 年 6 月揭牌
+     2015年7月22日K8S迭代到 v 1.0并正式对外公布
+     如今已经正式版本已到 1.16.3
+*** kubernetes 生态与社区
+**** kubernetes 生态中的明星
+***** 网络
+- flannel
+- calico
+- Core-DNS
+***** 存储
+- etcd
+***** 其他
+- helm
+- prometheus
+- istio
+- knative
+**** kubernetes 社区
+https://github.com/kubernetes/kubernetes
+目前 kubernetes 主仓库有
+2378 个 contributors
+86276 commit
+586 release
+2244 issues
+1079 PR
+529 members
+
+[[file:images/k8s-ans.png]]
+
+*** Links
+[fn:1-1]http://man7.org/linux/man-pages/man7/cgroups.7.html
+[fn:1-2]http://man7.org/linux/man-pages/man7/namespaces.7.html
+[fn:1-3]http://man7.org/linux/man-pages/man1/chroot.1.html
+[fn:1-4]http://man7.org/linux/man-pages/man2/chroot.2.html
+[fn:1-5]http://man7.org/linux/man-pages/man1/init.1.html
+[fn:1-6]https://linux.cn/article-6975-1.html
+[fn:1-7]https://github.com/opencontainers
+*** 课后作业
+1.安装 docker,并运行一个 nginx
+2.给一个容器设置 --cpus  --cpuset-cpus 并观察 cpu 的使用
+3.一个四核的机器上设置 --cpus=2.5 --cpuset-cpus="0,1" 那么容器最多可以占用多少 cpu 资源?为什么？
+请将 1 、3 两个问题的答案发送至邮箱,截至日期为下次课程开始之前
 ** 2.初识 kubernetes
+*** 课程大纲
+- [ ] 了解 kubernetes 有哪些组件
+- [ ] 简介 kubernetes 内的对象与资源
 *** kubernetes 的组件
 **** kubelet
 **** api-server
@@ -66,6 +189,7 @@
 **** pv pvc storageclass
 **** endpoints
 **** events
+*** Links
 ** 3.部署你的第一个 kubernetes 集群
 *** 课程大纲
 - [ ] 部署一个三个节点的 kubernetes 集群

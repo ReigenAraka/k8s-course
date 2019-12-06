@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-12-06 Fri 15:10 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>K8s course</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Byron Wang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">K8s course</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org6f4ac54">1. 课程目的</a>
+<ul>
+<li><a href="#org2526282">1.1. 进阶要求</a></li>
+</ul>
+</li>
+<li><a href="#orgfe96e9b">2. 课程安排</a></li>
+<li><a href="#orga8d1ac8">3. 课程内容</a>
+<ul>
+<li><a href="#orge71c604">3.1. 1.了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></a>
+<ul>
+<li><a href="#org2543458">3.1.1. 课程大纲</a></li>
+<li><a href="#orgf1ceff2">3.1.2. Cgroup、Container 与 OCI</a></li>
+<li><a href="#org40f8f0b">3.1.3. Docker 与虚拟机</a></li>
+<li><a href="#org13b7751">3.1.4. kubernetes 是什么</a></li>
+<li><a href="#orgfe02564">3.1.5. kubernetes 生态与社区</a></li>
+<li><a href="#org8d29fcd">3.1.6. Links</a></li>
+<li><a href="#org9a8666b">3.1.7. 课后作业</a></li>
+</ul>
+</li>
+<li><a href="#org3f0eb69">3.2. 2.初识 kubernetes</a>
+<ul>
+<li><a href="#org46e70c0">3.2.1. 课程大纲</a></li>
+<li><a href="#orgcb37780">3.2.2. kubernetes 的组件</a></li>
+<li><a href="#org9d86a3b">3.2.3. kubernetes 的资源</a></li>
+<li><a href="#org32974a7">3.2.4. Links</a></li>
+</ul>
+</li>
+<li><a href="#org27bf248">3.3. 3.部署你的第一个 kubernetes 集群</a>
+<ul>
+<li><a href="#org197bbc3">3.3.1. 课程大纲</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6f4ac54" class="outline-2">
+<h2 id="org6f4ac54"><span class="section-number-2">1</span> 课程目的</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>可以独立安装 k8s 集群</li>
+<li>可以简单运维 k8s 集群</li>
+<li>了解 k8s 组件与代码结构</li>
+<li>对云计算及生态有初步认识</li>
+<li>具备通过 ckad 的能力</li>
+</ul>
+</div>
+<div id="outline-container-org2526282" class="outline-3">
+<h3 id="org2526282"><span class="section-number-3">1.1</span> 进阶要求</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>可以实现一个 CNI/CRD/CCM</li>
+<li>成为 k8s contributor</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfe96e9b" class="outline-2">
+<h2 id="orgfe96e9b"><span class="section-number-2">2</span> 课程安排</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+地点:会议室
+时间:每周五下午 16:00-17:00
+时间安排: 45min(讲解) + 15min(答疑)
+作业形式: 问卷与实际操作
+</p>
+</div>
+</div>
+<div id="outline-container-orga8d1ac8" class="outline-2">
+<h2 id="orga8d1ac8"><span class="section-number-2">3</span> 课程内容</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orge71c604" class="outline-3">
+<h3 id="orge71c604"><span class="section-number-3">3.1</span> 1.了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></h3>
+<div class="outline-text-3" id="text-3-1">
+</div>
+<div id="outline-container-org2543458" class="outline-4">
+<h4 id="org2543458"><span class="section-number-4">3.1.1</span> 课程大纲</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> 操作系统基础</li>
+<li class="off"><code>[&#xa0;]</code> 简介 docker 与 container</li>
+<li class="off"><code>[&#xa0;]</code> docker 与虚拟机的区别</li>
+<li class="off"><code>[&#xa0;]</code> 认识什么是 kubernetes</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf1ceff2" class="outline-4">
+<h4 id="orgf1ceff2"><span class="section-number-4">3.1.2</span> Cgroup、Container 与 OCI</h4>
+<div class="outline-text-4" id="text-3-1-2">
+</div>
+<ol class="org-ol">
+<li><a id="orgb99bf87"></a>cgroups &amp; namespaces &amp; chroot &amp; systemd<br />
+<div class="outline-text-5" id="text-3-1-2-1">
+<p>
+cgroups<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> 用来控制一个每个服务的 CPU、mem、block I/O、device、net(tc)
+namespaces<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup> 用来做进程之间的隔离;UTS:主机 域名 IPC: 信号量 消息队列 共享内存 PID Network:设备 端口 网络栈 Mount: fs User:group user
+chroot<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> 用于将一个进程及其子进程的根目录改变到文件系统中的一个新位置，让这些进程只能访问到该目录。这个功能的想法是为每个进程提供独立的磁盘空间
+systemd<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> 用来启动守护进程,处理依赖关系
+</p>
+</div>
+</li>
+<li><a id="org1922970"></a>Container 的前世今生<br />
+<div class="outline-text-5" id="text-3-1-2-2">
+<ul class="org-ul">
+<li>1979 — chroot 一切的开始</li>
+<li>2000 — FreeBSD Jails 支持进程沙盒</li>
+<li>2001 — Linux VServer  加入 security context</li>
+<li>2004 — Solaris Containers 支持在 x86 和 SPARC 系统</li>
+<li>2005 — OpenVZ      IPC 与设备的隔离</li>
+<li>2006 — Process Containers kernel 2.6.24</li>
+<li>2008 — LXC 第一个最完善的 Linux 容器管理器的实现方案;现在容器技术的雏形</li>
+<li>2011 — Warde CloudFoundry 支持多个操作系统</li>
+<li>2013 — LMCTFY Let Me Contain That For You  Google libcontainer 的前身</li>
+<li>2013 — Docker images swarm 集大成者</li>
+<li>2014 — Rocket CoreOS</li>
+<li>2016 — Windows Containers Hyper-v</li>
+<li>2017 — Pouch 富容器 Alibaba</li>
+<li>2018 — Podman without of daemon</li>
+<li>2018 — WIndows Containers Windows-base</li>
+</ul>
+</div>
+</li>
+<li><a id="org49ff744"></a>OCI<br />
+<div class="outline-text-5" id="text-3-1-2-3">
+<p>
+open container initiative<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>
+</p>
+
+<p>
+Linux 基金会制定一个开放的工业化标准：容器运行时标准 （runtime spec）和 容器镜像标准（image spec）
+</p>
+<ul class="org-ul">
+<li>image spec
+文件系统
+manifest 文件
+index 文件</li>
+<li>runtime spec
+Container ID
+PID
+容器文件目录
+容器创建
+容器进程启动
+容器暂停
+容器暂停信号捕获
+容器的生命周期: init creating created running stopped</li>
+</ul>
+</div>
+</li>
+<li><a id="orgc52b80f"></a>docker 中容器的创建<br />
+<div class="outline-text-5" id="text-3-1-2-4">
+
+<div class="figure">
+<p><img src="images/docker-runc.png" alt="docker-runc.png" />
+</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org40f8f0b" class="outline-4">
+<h4 id="org40f8f0b"><span class="section-number-4">3.1.3</span> Docker 与虚拟机</h4>
+<div class="outline-text-4" id="text-3-1-3">
+</div>
+<ol class="org-ol">
+<li><a id="org0dd789a"></a>主流虚拟机的原理<br />
+<ol class="org-ol">
+<li><a id="orga2a0758"></a>虚拟化技术<br />
+<div class="outline-text-6" id="text-3-1-3-1-1">
+<ul class="org-ul">
+<li><p>
+I型虚拟机
+直接跑在裸机上，虚拟机软件模拟了完整的底层硬件;从 Cpu、时钟到外接设备
+</p>
+
+<p>
+代表技术 VMwareESX  Hyper-V
+</p></li>
+<li><p>
+II型虚拟机
+运行在宿主机的操作系统之上,所有的操作都借助于宿主机的操作系统
+</p>
+
+<p>
+代表技术: VMWare Workstation Hyper-V
+</p></li>
+</ul>
+</div>
+</li>
+</ol>
+</li>
+<li><a id="org2058da7"></a>容器与虚拟机<br />
+<div class="outline-text-5" id="text-3-1-3-2">
+<p>
+容器本身是虚拟化技术中的一种,作为最轻量级的虚拟化方案出现
+</p>
+
+<p>
+但容器与虚拟机有本质上的区别
+</p>
+
+<p>
+容器实际上是一个进程，而虚拟机则是一个完整的操作系统
+</p>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org13b7751" class="outline-4">
+<h4 id="org13b7751"><span class="section-number-4">3.1.4</span> kubernetes 是什么</h4>
+<div class="outline-text-4" id="text-3-1-4">
+<p>
+Production-Grade Container Scheduling and Management
+这是 kubernetes github 仓库上对这个项目的描述
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="orgd06b8ec"></a>我们为什么需要编排<br />
+<div class="outline-text-5" id="text-3-1-4-1">
+<p>
+我们不妨了解一下小明的故事
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="orgd798596"></a>小明是一个开发者<br />
+<div class="outline-text-6" id="text-3-1-4-1-1">
+<p>
+小明是一个开发者，这一天他想到了一个点子，他做了一个静态的网站，现在他想把网站上线。
+于是他将代码拷贝到了租赁的服务器上运行，因为他有三个服务器，他不想每次都把改动传递很多次.
+</p>
+
+<p>
+于是他想到了 Docker,他写了一个 Dockerfile 将网站打包成了 Docker 镜像，传到了镜像仓库，
+他每次只要到三个服务器上更新容器的镜像就好了
+</p>
+</div>
+</li>
+<li><a id="org2ac7347"></a>小明的网站提供其他的服务了<br />
+<div class="outline-text-6" id="text-3-1-4-1-2">
+<p>
+小明的网站提供其他的服务了，小明的网站现在不仅仅是一个静态页面了，现在小明需要爬取一些数据，然后展示出来，
+于是小明现在有两个服务：一个展示网站，一个用来爬取数据的服务。
+小明遇到了问题:展示网站怎么连接到爬取数据的服务上，
+</p>
+
+<p>
+于是小明将容器暴露了相应的端口用于内部服务的访问
+</p>
+</div>
+</li>
+<li><a id="orga24a945"></a>小明的业务又扩展了<br />
+<div class="outline-text-6" id="text-3-1-4-1-3">
+<p>
+小明的业务又扩展了，小明现在需要将爬取所有的数据存下来，放便做统计与查询。
+</p>
+
+<p>
+小明将本地的目录挂载到了容器目录中，于是所有的数据就都保存在了本地。
+</p>
+</div>
+</li>
+<li><a id="org7634416"></a>小明的业务发展的特别迅速<br />
+<div class="outline-text-6" id="text-3-1-4-1-4">
+<p>
+小明的业务发展的特别迅速，他有了几十倍的用户了，原有的三台服务器无法承受过大的压力，于是小明又多租了 17 台服务器，
+这时小明遇到了几个问题：每一台机器存储的数据无法同步，而且现在每做一次改动都要改动到 20 台服务器上，小明觉得太麻烦了
+</p>
+
+<p>
+于是小明将几台机器做成了 NFS 的服务器，然后所有的容器都挂载 NFS 的目录进行存储，又使用了一些批量处理工具。小明对自己很满意。
+</p>
+</div>
+</li>
+<li><a id="org7618cb5"></a>小明的服务间歇性的被冲跨了<br />
+<div class="outline-text-6" id="text-3-1-4-1-5">
+<p>
+小明的服务间歇性的被冲跨了，小明突然发现自己的服务在每天晚上凌晨左右会有几台被巨大的请求冲垮，小明现在无力负担起更多的服务器了，
+小明只能运营商处购买负载均衡服务，试图将流量均匀的分配到不同的机器上。这样过了几天，小明发现有许多用户抱怨内容出现丢失了，
+小明经过排查发现，由于 DNS 的原因之前的每个用户一般都被会到特定的几台机器上，由于 NFS 挂载的不是相同的目录，造成目录之间数据
+不一致。现在用户的请求统一经过运营商的负载均衡，导致用户的内容丢失。在加上运营商机器并不是很稳定，导致服务器经常失连。
+小明已经陷入了深深的运维漩涡当中，小明不想再维护了。
+</p>
+</div>
+</li>
+</ol>
+</li>
+<li><a id="org4815561"></a>kubernetes 的历史<br />
+<div class="outline-text-5" id="text-3-1-4-2">
+<p>
+kubernetes 由 Google 内部的编排系统 Borg 演化出来
+2014 年 6 月揭牌
+2015年7月22日K8S迭代到 v 1.0并正式对外公布
+如今已经正式版本已到 1.16.3
+</p>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-orgfe02564" class="outline-4">
+<h4 id="orgfe02564"><span class="section-number-4">3.1.5</span> kubernetes 生态与社区</h4>
+<div class="outline-text-4" id="text-3-1-5">
+</div>
+<ol class="org-ol">
+<li><a id="org2f4ff13"></a>kubernetes 生态中的明星<br />
+<ol class="org-ol">
+<li><a id="org57217b8"></a>网络<br />
+<div class="outline-text-6" id="text-3-1-5-1-1">
+<ul class="org-ul">
+<li>flannel</li>
+<li>calico</li>
+<li>Core-DNS</li>
+</ul>
+</div>
+</li>
+<li><a id="orgab8875f"></a>存储<br />
+<div class="outline-text-6" id="text-3-1-5-1-2">
+<ul class="org-ul">
+<li>etcd</li>
+</ul>
+</div>
+</li>
+<li><a id="org688a06b"></a>其他<br />
+<div class="outline-text-6" id="text-3-1-5-1-3">
+<ul class="org-ul">
+<li>helm</li>
+<li>prometheus</li>
+<li>istio</li>
+<li>knative</li>
+</ul>
+</div>
+</li>
+</ol>
+</li>
+<li><a id="org57440ae"></a>kubernetes 社区<br />
+<div class="outline-text-5" id="text-3-1-5-2">
+<p>
+<a href="https://github.com/kubernetes/kubernetes">https://github.com/kubernetes/kubernetes</a>
+目前 kubernetes 主仓库有
+2378 个 contributors
+86276 commit
+586 release
+2244 issues
+1079 PR
+529 members
+</p>
+
+
+<div class="figure">
+<p><img src="images/k8s-ans.png" alt="k8s-ans.png" />
+</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org8d29fcd" class="outline-4">
+<h4 id="org8d29fcd"><span class="section-number-4">3.1.6</span> Links</h4>
+<div class="outline-text-4" id="text-3-1-6">
+</div>
+</div>
+<div id="outline-container-org9a8666b" class="outline-4">
+<h4 id="org9a8666b"><span class="section-number-4">3.1.7</span> 课后作业</h4>
+<div class="outline-text-4" id="text-3-1-7">
+<p>
+1.安装 docker,并运行一个 nginx
+2.给一个容器设置 &#x2013;cpus  &#x2013;cpuset-cpus 并观察 cpu 的使用
+3.一个四核的机器上设置 &#x2013;cpus=2.5 &#x2013;cpuset-cpus="0,1" 那么容器最多可以占用多少 cpu 资源?为什么？
+请将 1 、3 两个问题的答案发送至邮箱,截至日期为下次课程开始之前
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org3f0eb69" class="outline-3">
+<h3 id="org3f0eb69"><span class="section-number-3">3.2</span> 2.初识 kubernetes</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-org46e70c0" class="outline-4">
+<h4 id="org46e70c0"><span class="section-number-4">3.2.1</span> 课程大纲</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> 了解 kubernetes 有哪些组件</li>
+<li class="off"><code>[&#xa0;]</code> 简介 kubernetes 内的对象与资源</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgcb37780" class="outline-4">
+<h4 id="orgcb37780"><span class="section-number-4">3.2.2</span> kubernetes 的组件</h4>
+<div class="outline-text-4" id="text-3-2-2">
+</div>
+<ol class="org-ol">
+<li><a id="org89effa7"></a>kubelet<br /></li>
+<li><a id="orgc97d57e"></a>api-server<br /></li>
+<li><a id="org5110a5e"></a>kube-controller<br /></li>
+<li><a id="org0066637"></a>scheduler<br /></li>
+<li><a id="orgb234c88"></a>kube-proxy<br /></li>
+<li><a id="orgaad8844"></a>etcd<br /></li>
+<li><a id="orge9dabb1"></a>core-dns<br /></li>
+</ol>
+</div>
+<div id="outline-container-org9d86a3b" class="outline-4">
+<h4 id="org9d86a3b"><span class="section-number-4">3.2.3</span> kubernetes 的资源</h4>
+<div class="outline-text-4" id="text-3-2-3">
+</div>
+<ol class="org-ol">
+<li><a id="orge9ae164"></a>pod<br /></li>
+<li><a id="orgd8e5846"></a>deployment<br /></li>
+<li><a id="org393f304"></a>service<br /></li>
+<li><a id="org6d4f47f"></a>statefulset<br /></li>
+<li><a id="org7d31bbe"></a>daemonset<br /></li>
+<li><a id="org73c9526"></a>comfigmap<br /></li>
+<li><a id="orgc7298ee"></a>cronjob<br /></li>
+<li><a id="orgafa1633"></a>job<br /></li>
+<li><a id="org23cefe8"></a>ingress<br /></li>
+<li><a id="org8ba4a87"></a>nodes<br /></li>
+<li><a id="orgc7a49a3"></a>namespace<br /></li>
+<li><a id="orgcb10234"></a>secrets<br /></li>
+<li><a id="orgaf5c114"></a>rbac<br /></li>
+<li><a id="org14f707b"></a>pv pvc storageclass<br /></li>
+<li><a id="orgb41b5b4"></a>endpoints<br /></li>
+<li><a id="org6231eb9"></a>events<br /></li>
+</ol>
+</div>
+<div id="outline-container-org32974a7" class="outline-4">
+<h4 id="org32974a7"><span class="section-number-4">3.2.4</span> Links</h4>
+</div>
+</div>
+<div id="outline-container-org27bf248" class="outline-3">
+<h3 id="org27bf248"><span class="section-number-3">3.3</span> 3.部署你的第一个 kubernetes 集群</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-org197bbc3" class="outline-4">
+<h4 id="org197bbc3"><span class="section-number-4">3.3.1</span> 课程大纲</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> 部署一个三个节点的 kubernetes 集群</li>
+<li class="off"><code>[&#xa0;]</code> 在 kubernetes 集群上部署一个经典的微服务程序</li>
+<li class="off"><code>[&#xa0;]</code> 了解 kubernetes 的 yaml 格式与写法</li>
+<li class="off"><code>[&#xa0;]</code> 了解 kubectl 的命令</li>
+<li class="off"><code>[&#xa0;]</code> 通过使用 kubectl 修改 yaml 完成对 deploy 与 service 的修改</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://man7.org/linux/man-pages/man7/cgroups.7.html">http://man7.org/linux/man-pages/man7/cgroups.7.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://man7.org/linux/man-pages/man7/namespaces.7.html">http://man7.org/linux/man-pages/man7/namespaces.7.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://man7.org/linux/man-pages/man2/chroot.2.html">http://man7.org/linux/man-pages/man2/chroot.2.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+<a href="http://man7.org/linux/man-pages/man1/init.1.html">http://man7.org/linux/man-pages/man1/init.1.html</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://github.com/opencontainers">https://github.com/opencontainers</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: Byron Wang</p>
+<p class="date">Created: 2019-12-06 Fri 15:10</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
