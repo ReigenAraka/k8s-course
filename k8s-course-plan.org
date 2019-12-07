@@ -119,8 +119,11 @@ Production-Grade Container Scheduling and Management
       小明已经陷入了深深的运维漩涡当中，小明不想再维护了。
 **** kubernetes 的历史
      kubernetes 由 Google 内部的编排系统 Borg 演化出来
+
      2014 年 6 月揭牌
+
      2015年7月22日K8S迭代到 v 1.0并正式对外公布
+
      如今已经正式版本已到 1.16.3
 *** kubernetes 生态与社区
 **** kubernetes 生态中的明星
@@ -137,16 +140,16 @@ Production-Grade Container Scheduling and Management
 - knative
 **** kubernetes 社区
 https://github.com/kubernetes/kubernetes
-目前 kubernetes 主仓库有
-2378 个 contributors
-86276 commit
-586 release
-2244 issues
-1079 PR
-529 members
+
+| Project    | contributors | commit | issue |   PR | members | release | star  | fork  |
+|------------+--------------+--------+-------+------+---------+---------+-------+-------|
+| Docker     |         1845 |  38049 |  3673 |  197 |      20 |     198 | 55.8k | 16.1k |
+| Kubernetes |         2378 |  86276 |  2244 | 1079 |     529 |     586 | 60.8k | 21.5k |
+| Tidb       |          372 |   9834 |  1086 |  136 |      63 |      81 | 21.7k | 3.3k  |
 
 [[file:images/k8s-ans.png]]
 
+[[file:images/docker-ans.png]]
 *** Links
 [fn:1-1]http://man7.org/linux/man-pages/man7/cgroups.7.html
 [fn:1-2]http://man7.org/linux/man-pages/man7/namespaces.7.html
@@ -157,8 +160,11 @@ https://github.com/kubernetes/kubernetes
 [fn:1-7]https://github.com/opencontainers
 *** 课后作业
 1.安装 docker,并运行一个 nginx
+
 2.给一个容器设置 --cpus  --cpuset-cpus 并观察 cpu 的使用
+
 3.一个四核的机器上设置 --cpus=2.5 --cpuset-cpus="0,1" 那么容器最多可以占用多少 cpu 资源?为什么？
+
 请将 1 、3 两个问题的答案发送至邮箱,截至日期为下次课程开始之前
 ** 2.初识 kubernetes
 *** 课程大纲
