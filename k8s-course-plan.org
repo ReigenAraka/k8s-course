@@ -20,10 +20,10 @@
 * 课程内容
 ** 1.了解 kubernetes 之前<2019-12-06 Fri>
 *** 课程大纲
-- [ ] 操作系统基础
-- [ ] 简介 docker 与 container
-- [ ] docker 与虚拟机的区别
-- [ ] 认识什么是 kubernetes
+- 操作系统基础
+- 简介 docker 与 container
+- docker 与虚拟机的区别
+- 认识什么是 kubernetes
 *** Cgroup、Container 与 OCI
 **** cgroups & namespaces & chroot & systemd
 cgroups[fn:1-1] 用来控制一个每个服务的 CPU、mem、block I/O、device、net(tc)
@@ -166,7 +166,22 @@ https://github.com/kubernetes/kubernetes
 3.一个四核的机器上设置 --cpus=2.5 --cpuset-cpus="0,1" 那么容器最多可以占用多少 cpu 资源?为什么？
 
 请将 1 、3 两个问题的答案发送至邮箱,截至日期为下次课程开始之前
-** 2.初识 kubernetes
+** 2.Containers Pods 与 workloads
+*** 课程大纲
+- [ ] containers 的生命周期与 RuntimeClass
+- [ ] pods 与 containers
+- [ ] 谁在掌控 pods 的生死
+** 3.部署你的第一个 kubernetes 集群
+*** 课程大纲
+- [ ] 部署一个三个节点的 kubernetes 集群
+- [ ] 在 kubernetes 集群上部署一个经典的微服务程序
+- [ ] 了解 kubernetes 的 yaml 格式与写法
+- [ ] 了解 kubectl 的命令
+- [ ] 通过使用 kubectl 修改 yaml 完成对 deploy 的修改
+** 4.Service Loadbalanceing and Networking
+** 5.Storage
+** 6.Security
+** 初识 kubernetes 组件
 *** 课程大纲
 - [ ] 了解 kubernetes 有哪些组件
 - [ ] 简介 kubernetes 内的对象与资源
@@ -178,28 +193,4 @@ https://github.com/kubernetes/kubernetes
 **** kube-proxy
 **** etcd
 **** core-dns
-*** kubernetes 的资源
-**** pod
-**** deployment
-**** service
-**** statefulset
-**** daemonset
-**** comfigmap
-**** cronjob
-**** job
-**** ingress
-**** nodes
-**** namespace
-**** secrets
-**** rbac
-**** pv pvc storageclass
-**** endpoints
-**** events
 *** Links
-** 3.部署你的第一个 kubernetes 集群
-*** 课程大纲
-- [ ] 部署一个三个节点的 kubernetes 集群
-- [ ] 在 kubernetes 集群上部署一个经典的微服务程序
-- [ ] 了解 kubernetes 的 yaml 格式与写法
-- [ ] 了解 kubectl 的命令
-- [ ] 通过使用 kubectl 修改 yaml 完成对 deploy 与 service 的修改
