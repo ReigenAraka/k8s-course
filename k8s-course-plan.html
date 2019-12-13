@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-06 Fri 15:19 -->
+<!-- 2019-12-13 Fri 12:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>K8s course</title>
@@ -240,36 +240,88 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb2d3d8c">1. 课程目的</a>
+<li><a href="#org030e7ed">1. 课程目的</a>
 <ul>
-<li><a href="#org994e2ac">1.1. 进阶要求</a></li>
+<li><a href="#org660dffe">1.1. 进阶要求</a></li>
 </ul>
 </li>
-<li><a href="#org655e92b">2. 课程安排</a></li>
-<li><a href="#org6096619">3. 课程内容</a>
+<li><a href="#orgaaa7f6b">2. 课程安排</a></li>
+<li><a href="#org35f849c">3. 了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></a>
 <ul>
-<li><a href="#orge32267e">3.1. 1.了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></a>
+<li><a href="#org3a9872f">3.1. 课程大纲</a></li>
+<li><a href="#org8f25d72">3.2. Cgroup、Container 与 OCI</a>
 <ul>
-<li><a href="#orgca6a82a">3.1.1. 课程大纲</a></li>
-<li><a href="#org45d6eca">3.1.2. Cgroup、Container 与 OCI</a></li>
-<li><a href="#org5985be2">3.1.3. Docker 与虚拟机</a></li>
-<li><a href="#orgf5cf5d9">3.1.4. kubernetes 是什么</a></li>
-<li><a href="#orgf2d11c0">3.1.5. kubernetes 生态与社区</a></li>
-<li><a href="#org9b496a1">3.1.6. Links</a></li>
-<li><a href="#org25ac370">3.1.7. 课后作业</a></li>
+<li><a href="#org29d6e7b">3.2.1. cgroups &amp; namespaces &amp; chroot &amp; systemd</a></li>
+<li><a href="#org109a473">3.2.2. Container 的前世今生</a></li>
+<li><a href="#orgd7e7055">3.2.3. OCI</a></li>
+<li><a href="#org09d8702">3.2.4. docker 中容器的创建</a></li>
 </ul>
 </li>
-<li><a href="#org046fb47">3.2. 2.初识 kubernetes</a>
+<li><a href="#org0047306">3.3. Docker 与虚拟机</a>
 <ul>
-<li><a href="#org2caad15">3.2.1. 课程大纲</a></li>
-<li><a href="#org3bb97d5">3.2.2. kubernetes 的组件</a></li>
-<li><a href="#orgb65fe96">3.2.3. kubernetes 的资源</a></li>
-<li><a href="#org8294da7">3.2.4. Links</a></li>
+<li><a href="#orgceb68dd">3.3.1. 主流虚拟机的原理</a></li>
+<li><a href="#org02f2da7">3.3.2. 容器与虚拟机</a></li>
 </ul>
 </li>
-<li><a href="#org9455562">3.3. 3.部署你的第一个 kubernetes 集群</a>
+<li><a href="#org10c11ab">3.4. kubernetes 是什么</a>
 <ul>
-<li><a href="#org9ec14de">3.3.1. 课程大纲</a></li>
+<li><a href="#orgd4cad82">3.4.1. 我们为什么需要编排</a></li>
+<li><a href="#org465bcae">3.4.2. kubernetes 的历史</a></li>
+</ul>
+</li>
+<li><a href="#org02130a7">3.5. kubernetes 生态与社区</a>
+<ul>
+<li><a href="#org8aa1b9e">3.5.1. kubernetes 生态中的明星</a></li>
+<li><a href="#orgd28832e">3.5.2. kubernetes 社区</a></li>
+</ul>
+</li>
+<li><a href="#org9a2a905">3.6. 课后作业</a></li>
+</ul>
+</li>
+<li><a href="#org66014d4">4. Containers 与 Pods<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-13 Fri&gt;</span></span></a>
+<ul>
+<li><a href="#orgb3896a6">4.1. 课程大纲</a></li>
+<li><a href="#org2892cc6">4.2. CRI</a>
+<ul>
+<li><a href="#orgac2b939">4.2.1. CRI 的意义</a></li>
+<li><a href="#org2893da4">4.2.2. CRI 的接口</a></li>
+</ul>
+</li>
+<li><a href="#orgdb77e0c">4.3. 容器与 Pod</a>
+<ul>
+<li><a href="#org6024265">4.3.1. Pod 是什么</a></li>
+<li><a href="#orgfed20db">4.3.2. Pod 里面有什么</a></li>
+<li><a href="#orgf78e023">4.3.3. Pod 实现原理</a></li>
+<li><a href="#org1a57565">4.3.4. init containers</a></li>
+<li><a href="#org1700cf4">4.3.5. POD 的生命周期</a></li>
+<li><a href="#org793a265">4.3.6. Pod 的回收</a></li>
+<li><a href="#orge6f52c6">4.3.7. multi Pod 的实际场景</a></li>
+</ul>
+</li>
+<li><a href="#orgee34f8f">4.4. 课后作业</a></li>
+</ul>
+</li>
+<li><a href="#org37e231b">5. 3.部署你的第一个 kubernetes 集群</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org64d6832">5.0.1. 课程大纲</a></li>
+<li><a href="#orgebb78c2">5.0.2. Links</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org507aa0f">6. 4.Pod controllers</a></li>
+<li><a href="#orgc553b07">7. Service Loadbalanceing and Networking</a></li>
+<li><a href="#org5484c39">8. Storage</a></li>
+<li><a href="#org8033def">9. Security</a></li>
+<li><a href="#org738d05a">10. 初识 kubernetes 组件</a>
+<ul>
+<li>
+<ul>
+<li><a href="#orgd480825">10.0.1. 课程大纲</a></li>
+<li><a href="#org68c9d79">10.0.2. kubernetes 的组件</a></li>
+<li><a href="#org8dd2e49">10.0.3. Links</a></li>
 </ul>
 </li>
 </ul>
@@ -277,8 +329,8 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb2d3d8c" class="outline-2">
-<h2 id="orgb2d3d8c"><span class="section-number-2">1</span> 课程目的</h2>
+<div id="outline-container-org030e7ed" class="outline-2">
+<h2 id="org030e7ed"><span class="section-number-2">1</span> 课程目的</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>可以独立安装 k8s 集群</li>
@@ -288,8 +340,8 @@ for the JavaScript code in this tag.
 <li>具备通过 ckad 的能力</li>
 </ul>
 </div>
-<div id="outline-container-org994e2ac" class="outline-3">
-<h3 id="org994e2ac"><span class="section-number-3">1.1</span> 进阶要求</h3>
+<div id="outline-container-org660dffe" class="outline-3">
+<h3 id="org660dffe"><span class="section-number-3">1.1</span> 进阶要求</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>可以实现一个 CNI/CRD/CCM</li>
@@ -298,8 +350,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org655e92b" class="outline-2">
-<h2 id="org655e92b"><span class="section-number-2">2</span> 课程安排</h2>
+<div id="outline-container-orgaaa7f6b" class="outline-2">
+<h2 id="orgaaa7f6b"><span class="section-number-2">2</span> 课程安排</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 地点:会议室
@@ -309,32 +361,28 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
-<div id="outline-container-org6096619" class="outline-2">
-<h2 id="org6096619"><span class="section-number-2">3</span> 课程内容</h2>
+<div id="outline-container-org35f849c" class="outline-2">
+<h2 id="org35f849c"><span class="section-number-2">3</span> 了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orge32267e" class="outline-3">
-<h3 id="orge32267e"><span class="section-number-3">3.1</span> 1.了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></h3>
+<div id="outline-container-org3a9872f" class="outline-3">
+<h3 id="org3a9872f"><span class="section-number-3">3.1</span> 课程大纲</h3>
 <div class="outline-text-3" id="text-3-1">
-</div>
-<div id="outline-container-orgca6a82a" class="outline-4">
-<h4 id="orgca6a82a"><span class="section-number-4">3.1.1</span> 课程大纲</h4>
-<div class="outline-text-4" id="text-3-1-1">
 <ul class="org-ul">
-<li class="off"><code>[&#xa0;]</code> 操作系统基础</li>
-<li class="off"><code>[&#xa0;]</code> 简介 docker 与 container</li>
-<li class="off"><code>[&#xa0;]</code> docker 与虚拟机的区别</li>
-<li class="off"><code>[&#xa0;]</code> 认识什么是 kubernetes</li>
+<li>操作系统基础</li>
+<li>简介 docker 与 container</li>
+<li>docker 与虚拟机的区别</li>
+<li>认识什么是 kubernetes</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org45d6eca" class="outline-4">
-<h4 id="org45d6eca"><span class="section-number-4">3.1.2</span> Cgroup、Container 与 OCI</h4>
-<div class="outline-text-4" id="text-3-1-2">
+<div id="outline-container-org8f25d72" class="outline-3">
+<h3 id="org8f25d72"><span class="section-number-3">3.2</span> Cgroup、Container 与 OCI</h3>
+<div class="outline-text-3" id="text-3-2">
 </div>
-<ol class="org-ol">
-<li><a id="org969fa6b"></a>cgroups &amp; namespaces &amp; chroot &amp; systemd<br />
-<div class="outline-text-5" id="text-3-1-2-1">
+<div id="outline-container-org29d6e7b" class="outline-4">
+<h4 id="org29d6e7b"><span class="section-number-4">3.2.1</span> cgroups &amp; namespaces &amp; chroot &amp; systemd</h4>
+<div class="outline-text-4" id="text-3-2-1">
 <p>
 cgroups<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> 用来控制一个每个服务的 CPU、mem、block I/O、device、net(tc)
 </p>
@@ -351,9 +399,10 @@ chroot<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> 用于将一�
 systemd<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> 用来启动守护进程,处理依赖关系
 </p>
 </div>
-</li>
-<li><a id="orgff6d135"></a>Container 的前世今生<br />
-<div class="outline-text-5" id="text-3-1-2-2">
+</div>
+<div id="outline-container-org109a473" class="outline-4">
+<h4 id="org109a473"><span class="section-number-4">3.2.2</span> Container 的前世今生</h4>
+<div class="outline-text-4" id="text-3-2-2">
 <ul class="org-ul">
 <li>1979 — chroot 一切的开始</li>
 <li>2000 — FreeBSD Jails 支持进程沙盒</li>
@@ -372,9 +421,10 @@ systemd<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> 用来启动�
 <li>2018 — WIndows Containers Windows-base</li>
 </ul>
 </div>
-</li>
-<li><a id="orgf55267f"></a>OCI<br />
-<div class="outline-text-5" id="text-3-1-2-3">
+</div>
+<div id="outline-container-orgd7e7055" class="outline-4">
+<h4 id="orgd7e7055"><span class="section-number-4">3.2.3</span> OCI</h4>
+<div class="outline-text-4" id="text-3-2-3">
 <p>
 open container initiative<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>
 </p>
@@ -398,27 +448,29 @@ PID
 容器的生命周期: init creating created running stopped</li>
 </ul>
 </div>
-</li>
-<li><a id="orge93cb6d"></a>docker 中容器的创建<br />
-<div class="outline-text-5" id="text-3-1-2-4">
+</div>
+<div id="outline-container-org09d8702" class="outline-4">
+<h4 id="org09d8702"><span class="section-number-4">3.2.4</span> docker 中容器的创建</h4>
+<div class="outline-text-4" id="text-3-2-4">
 
 <div class="figure">
 <p><img src="images/docker-runc.png" alt="docker-runc.png" />
 </p>
 </div>
 </div>
-</li>
-</ol>
 </div>
-<div id="outline-container-org5985be2" class="outline-4">
-<h4 id="org5985be2"><span class="section-number-4">3.1.3</span> Docker 与虚拟机</h4>
-<div class="outline-text-4" id="text-3-1-3">
+</div>
+<div id="outline-container-org0047306" class="outline-3">
+<h3 id="org0047306"><span class="section-number-3">3.3</span> Docker 与虚拟机</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-orgceb68dd" class="outline-4">
+<h4 id="orgceb68dd"><span class="section-number-4">3.3.1</span> 主流虚拟机的原理</h4>
+<div class="outline-text-4" id="text-3-3-1">
 </div>
 <ol class="org-ol">
-<li><a id="org5ea075f"></a>主流虚拟机的原理<br />
-<ol class="org-ol">
-<li><a id="orge638641"></a>虚拟化技术<br />
-<div class="outline-text-6" id="text-3-1-3-1-1">
+<li><a id="org37b3438"></a>虚拟化技术<br />
+<div class="outline-text-6" id="text-3-3-1-0-1">
 <ul class="org-ul">
 <li><p>
 I型虚拟机
@@ -440,9 +492,10 @@ II型虚拟机
 </div>
 </li>
 </ol>
-</li>
-<li><a id="org43270a5"></a>容器与虚拟机<br />
-<div class="outline-text-5" id="text-3-1-3-2">
+</div>
+<div id="outline-container-org02f2da7" class="outline-4">
+<h4 id="org02f2da7"><span class="section-number-4">3.3.2</span> 容器与虚拟机</h4>
+<div class="outline-text-4" id="text-3-3-2">
 <p>
 容器本身是虚拟化技术中的一种,作为最轻量级的虚拟化方案出现
 </p>
@@ -455,27 +508,26 @@ II型虚拟机
 容器实际上是一个进程，而虚拟机则是一个完整的操作系统
 </p>
 </div>
-</li>
-</ol>
 </div>
-<div id="outline-container-orgf5cf5d9" class="outline-4">
-<h4 id="orgf5cf5d9"><span class="section-number-4">3.1.4</span> kubernetes 是什么</h4>
-<div class="outline-text-4" id="text-3-1-4">
+</div>
+<div id="outline-container-org10c11ab" class="outline-3">
+<h3 id="org10c11ab"><span class="section-number-3">3.4</span> kubernetes 是什么</h3>
+<div class="outline-text-3" id="text-3-4">
 <p>
 Production-Grade Container Scheduling and Management
 这是 kubernetes github 仓库上对这个项目的描述
 </p>
 </div>
-<ol class="org-ol">
-<li><a id="orge7415a8"></a>我们为什么需要编排<br />
-<div class="outline-text-5" id="text-3-1-4-1">
+<div id="outline-container-orgd4cad82" class="outline-4">
+<h4 id="orgd4cad82"><span class="section-number-4">3.4.1</span> 我们为什么需要编排</h4>
+<div class="outline-text-4" id="text-3-4-1">
 <p>
 我们不妨了解一下小明的故事
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="orge18d802"></a>小明是一个开发者<br />
-<div class="outline-text-6" id="text-3-1-4-1-1">
+<li><a id="orgf32217a"></a>小明是一个开发者<br />
+<div class="outline-text-6" id="text-3-4-1-0-1">
 <p>
 小明是一个开发者，这一天他想到了一个点子，他做了一个静态的网站，现在他想把网站上线。
 于是他将代码拷贝到了租赁的服务器上运行，因为他有三个服务器，他不想每次都把改动传递很多次.
@@ -487,8 +539,8 @@ Production-Grade Container Scheduling and Management
 </p>
 </div>
 </li>
-<li><a id="org429321a"></a>小明的网站提供其他的服务了<br />
-<div class="outline-text-6" id="text-3-1-4-1-2">
+<li><a id="orge47e429"></a>小明的网站提供其他的服务了<br />
+<div class="outline-text-6" id="text-3-4-1-0-2">
 <p>
 小明的网站提供其他的服务了，小明的网站现在不仅仅是一个静态页面了，现在小明需要爬取一些数据，然后展示出来，
 于是小明现在有两个服务：一个展示网站，一个用来爬取数据的服务。
@@ -500,8 +552,8 @@ Production-Grade Container Scheduling and Management
 </p>
 </div>
 </li>
-<li><a id="orgd22ad08"></a>小明的业务又扩展了<br />
-<div class="outline-text-6" id="text-3-1-4-1-3">
+<li><a id="org6d9261e"></a>小明的业务又扩展了<br />
+<div class="outline-text-6" id="text-3-4-1-0-3">
 <p>
 小明的业务又扩展了，小明现在需要将爬取所有的数据存下来，放便做统计与查询。
 </p>
@@ -511,8 +563,8 @@ Production-Grade Container Scheduling and Management
 </p>
 </div>
 </li>
-<li><a id="org54cfbb9"></a>小明的业务发展的特别迅速<br />
-<div class="outline-text-6" id="text-3-1-4-1-4">
+<li><a id="orga5725a4"></a>小明的业务发展的特别迅速<br />
+<div class="outline-text-6" id="text-3-4-1-0-4">
 <p>
 小明的业务发展的特别迅速，他有了几十倍的用户了，原有的三台服务器无法承受过大的压力，于是小明又多租了 17 台服务器，
 这时小明遇到了几个问题：每一台机器存储的数据无法同步，而且现在每做一次改动都要改动到 20 台服务器上，小明觉得太麻烦了
@@ -523,8 +575,8 @@ Production-Grade Container Scheduling and Management
 </p>
 </div>
 </li>
-<li><a id="org9c4b6d1"></a>小明的服务间歇性的被冲跨了<br />
-<div class="outline-text-6" id="text-3-1-4-1-5">
+<li><a id="org61ee4e6"></a>小明的服务间歇性的被冲跨了<br />
+<div class="outline-text-6" id="text-3-4-1-0-5">
 <p>
 小明的服务间歇性的被冲跨了，小明突然发现自己的服务在每天晚上凌晨左右会有几台被巨大的请求冲垮，小明现在无力负担起更多的服务器了，
 小明只能运营商处购买负载均衡服务，试图将流量均匀的分配到不同的机器上。这样过了几天，小明发现有许多用户抱怨内容出现丢失了，
@@ -535,9 +587,10 @@ Production-Grade Container Scheduling and Management
 </div>
 </li>
 </ol>
-</li>
-<li><a id="org87f9c44"></a>kubernetes 的历史<br />
-<div class="outline-text-5" id="text-3-1-4-2">
+</div>
+<div id="outline-container-org465bcae" class="outline-4">
+<h4 id="org465bcae"><span class="section-number-4">3.4.2</span> kubernetes 的历史</h4>
+<div class="outline-text-4" id="text-3-4-2">
 <p>
 kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </p>
@@ -554,18 +607,19 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 如今已经正式版本已到 1.16.3
 </p>
 </div>
-</li>
-</ol>
 </div>
-<div id="outline-container-orgf2d11c0" class="outline-4">
-<h4 id="orgf2d11c0"><span class="section-number-4">3.1.5</span> kubernetes 生态与社区</h4>
-<div class="outline-text-4" id="text-3-1-5">
+</div>
+<div id="outline-container-org02130a7" class="outline-3">
+<h3 id="org02130a7"><span class="section-number-3">3.5</span> kubernetes 生态与社区</h3>
+<div class="outline-text-3" id="text-3-5">
+</div>
+<div id="outline-container-org8aa1b9e" class="outline-4">
+<h4 id="org8aa1b9e"><span class="section-number-4">3.5.1</span> kubernetes 生态中的明星</h4>
+<div class="outline-text-4" id="text-3-5-1">
 </div>
 <ol class="org-ol">
-<li><a id="org0a02bbe"></a>kubernetes 生态中的明星<br />
-<ol class="org-ol">
-<li><a id="orgb080a06"></a>网络<br />
-<div class="outline-text-6" id="text-3-1-5-1-1">
+<li><a id="orgcdcde4a"></a>网络<br />
+<div class="outline-text-6" id="text-3-5-1-0-1">
 <ul class="org-ul">
 <li>flannel</li>
 <li>calico</li>
@@ -573,15 +627,15 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </ul>
 </div>
 </li>
-<li><a id="org9973b0f"></a>存储<br />
-<div class="outline-text-6" id="text-3-1-5-1-2">
+<li><a id="org6ec8ffa"></a>存储<br />
+<div class="outline-text-6" id="text-3-5-1-0-2">
 <ul class="org-ul">
 <li>etcd</li>
 </ul>
 </div>
 </li>
-<li><a id="org062c3c2"></a>其他<br />
-<div class="outline-text-6" id="text-3-1-5-1-3">
+<li><a id="orgb34fb38"></a>其他<br />
+<div class="outline-text-6" id="text-3-5-1-0-3">
 <ul class="org-ul">
 <li>helm</li>
 <li>prometheus</li>
@@ -591,9 +645,10 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </div>
 </li>
 </ol>
-</li>
-<li><a id="orge2b5d17"></a>kubernetes 社区<br />
-<div class="outline-text-5" id="text-3-1-5-2">
+</div>
+<div id="outline-container-orgd28832e" class="outline-4">
+<h4 id="orgd28832e"><span class="section-number-4">3.5.2</span> kubernetes 社区</h4>
+<div class="outline-text-4" id="text-3-5-2">
 <p>
 <a href="https://github.com/kubernetes/kubernetes">https://github.com/kubernetes/kubernetes</a>
 </p>
@@ -659,7 +714,7 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </tr>
 
 <tr>
-<td class="org-left">tidb</td>
+<td class="org-left">Tidb</td>
 <td class="org-right">372</td>
 <td class="org-right">9834</td>
 <td class="org-right">1086</td>
@@ -684,17 +739,11 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </p>
 </div>
 </div>
-</li>
-</ol>
-</div>
-<div id="outline-container-org9b496a1" class="outline-4">
-<h4 id="org9b496a1"><span class="section-number-4">3.1.6</span> Links</h4>
-<div class="outline-text-4" id="text-3-1-6">
 </div>
 </div>
-<div id="outline-container-org25ac370" class="outline-4">
-<h4 id="org25ac370"><span class="section-number-4">3.1.7</span> 课后作业</h4>
-<div class="outline-text-4" id="text-3-1-7">
+<div id="outline-container-org9a2a905" class="outline-3">
+<h3 id="org9a2a905"><span class="section-number-3">3.6</span> 课后作业</h3>
+<div class="outline-text-3" id="text-3-6">
 <p>
 1.安装 docker,并运行一个 nginx
 </p>
@@ -713,76 +762,463 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </div>
 </div>
 </div>
-<div id="outline-container-org046fb47" class="outline-3">
-<h3 id="org046fb47"><span class="section-number-3">3.2</span> 2.初识 kubernetes</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-org66014d4" class="outline-2">
+<h2 id="org66014d4"><span class="section-number-2">4</span> Containers 与 Pods<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-13 Fri&gt;</span></span></h2>
+<div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org2caad15" class="outline-4">
-<h4 id="org2caad15"><span class="section-number-4">3.2.1</span> 课程大纲</h4>
-<div class="outline-text-4" id="text-3-2-1">
+<div id="outline-container-orgb3896a6" class="outline-3">
+<h3 id="orgb3896a6"><span class="section-number-3">4.1</span> 课程大纲</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> 了解 CRI 以及 CRI 的意义，从而了解 k8s 的方向</li>
+<li class="off"><code>[&#xa0;]</code> 明白 pods 与 containers 的区别与关系</li>
+<li class="off"><code>[&#xa0;]</code> 了解 pods 的原理</li>
+<li class="off"><code>[&#xa0;]</code> 初识 k8s yaml</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2892cc6" class="outline-3">
+<h3 id="org2892cc6"><span class="section-number-3">4.2</span> CRI</h3>
+<div class="outline-text-3" id="text-4-2">
+
+<div class="figure">
+<p><img src="./images/松溪观鹿图.jpeg" alt="松溪观鹿图.jpeg" />
+</p>
+</div>
+</div>
+<div id="outline-container-orgac2b939" class="outline-4">
+<h4 id="orgac2b939"><span class="section-number-4">4.2.1</span> CRI 的意义</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+kubernetes 将其可以剥离开的部分转换为接口对外开放出去
+</p>
+
+<p>
+1.减少核心的代码可以保证代码稳定性与产品质量
+</p>
+
+<p>
+2.k8s 不依赖于某几种场景，这种方式带给 k8s 更多的可能
+</p>
+
+<p>
+CRI 就是其开放出去的一个，CRI (container runtime interface)
+</p>
+
+<p>
+CRI 的出现是对 Docker 的一个巨大打击 CRI 出现在 kubernetes 1.5 的版本中 2016 年 12 月，而正是此时，docker 公司正在进行他的商业化的第一步
+</p>
+
+<p>
+Docker 的最大优势在于庞大的用户与及其优秀的生态,许多人都是从 Docker 才了解了容器，包括现在仍然有许多人提起容器仅能想起 Docker
+</p>
+
+<p>
+kubernetes 一定不会将自己与 Docker 捆绑在同一条船上，CRI 出现之前尚可称为同床异梦,而在这之后则是真正的分居
+</p>
+
+<p>
+kubernetes 在此刻已经展现了自己的爪牙
+</p>
+</div>
+</div>
+<div id="outline-container-org2893da4" class="outline-4">
+<h4 id="org2893da4"><span class="section-number-4">4.2.2</span> CRI 的接口</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+CRI Proto<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>
+</p>
+<div class="org-src-container">
+<pre class="src src-go">service <span style="color: #7aa6da;">RuntimeService</span> <span style="color: #eaeaea;">{</span>
+    rpc <span style="color: #7aa6da;">Version</span><span style="color: #70c0b1;">(</span>VersionRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>VersionResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">RunPodSandbox</span><span style="color: #70c0b1;">(</span>RunPodSandboxRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>RunPodSandboxResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">StopPodSandbox</span><span style="color: #70c0b1;">(</span>StopPodSandboxRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>StopPodSandboxResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">RemovePodSandbox</span><span style="color: #70c0b1;">(</span>RemovePodSandboxRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>RemovePodSandboxResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">PodSandboxStatus</span><span style="color: #70c0b1;">(</span>PodSandboxStatusRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>PodSandboxStatusResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">ListPodSandbox</span><span style="color: #70c0b1;">(</span>ListPodSandboxRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>ListPodSandboxResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">CreateContainer</span><span style="color: #70c0b1;">(</span>CreateContainerRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>CreateContainerResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">StartContainer</span><span style="color: #70c0b1;">(</span>StartContainerRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>StartContainerResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">StopContainer</span><span style="color: #70c0b1;">(</span>StopContainerRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>StopContainerResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">RemoveContainer</span><span style="color: #70c0b1;">(</span>RemoveContainerRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>RemoveContainerResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">ListContainers</span><span style="color: #70c0b1;">(</span>ListContainersRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>ListContainersResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">ContainerStatus</span><span style="color: #70c0b1;">(</span>ContainerStatusRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>ContainerStatusResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">ExecSync</span><span style="color: #70c0b1;">(</span>ExecSyncRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>ExecSyncResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">Exec</span><span style="color: #70c0b1;">(</span>ExecRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>ExecResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">Attach</span><span style="color: #70c0b1;">(</span>AttachRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>AttachResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">PortForward</span><span style="color: #70c0b1;">(</span>PortForwardRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>PortForwardResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">UpdateRuntimeConfig</span><span style="color: #70c0b1;">(</span>UpdateRuntimeConfigRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>UpdateRuntimeConfigResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+    rpc <span style="color: #7aa6da;">Status</span><span style="color: #70c0b1;">(</span>StatusRequest<span style="color: #70c0b1;">)</span> <span style="color: #7aa6da;">returns</span> <span style="color: #70c0b1;">(</span>StatusResponse<span style="color: #70c0b1;">)</span> <span style="color: #70c0b1;">{}</span>
+<span style="color: #eaeaea;">}</span>
+</pre>
+</div>
+<p>
+这里有了个新的概念 PodSandbox
+就是我们下面要说到的 Pod
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdb77e0c" class="outline-3">
+<h3 id="orgdb77e0c"><span class="section-number-3">4.3</span> 容器与 Pod</h3>
+<div class="outline-text-3" id="text-4-3">
+</div>
+<div id="outline-container-org6024265" class="outline-4">
+<h4 id="org6024265"><span class="section-number-4">4.3.1</span> Pod 是什么</h4>
+<div class="outline-text-4" id="text-4-3-1">
+
+<div class="figure">
+<p><img src="./images/pods.jpg" alt="pods.jpg" />
+</p>
+</div>
+
+<p>
+Pod 是 kubernetes 中部署与调度的最小单元
+</p>
+
+<p>
+听起来是不是似曾相识
+</p>
+</div>
+</div>
+<div id="outline-container-orgfed20db" class="outline-4">
+<h4 id="orgfed20db"><span class="section-number-4">4.3.2</span> Pod 里面有什么</h4>
+<div class="outline-text-4" id="text-4-3-2">
+
+<div class="figure">
+<p><img src="./images/pods.png" alt="pods.png" />
+</p>
+</div>
+
+<p>
+Pod 内的容器共享网络与存储
+</p>
+
+<p>
+这意味着在同一个 Pod 中的容器有着相同的 IP 与端口
+</p>
+</div>
+</div>
+<div id="outline-container-orgf78e023" class="outline-4">
+<h4 id="orgf78e023"><span class="section-number-4">4.3.3</span> Pod 实现原理</h4>
+<div class="outline-text-4" id="text-4-3-3">
+<p>
+pause-container 是实现 Pod 共享 namespace 的原因
+</p>
+
+<p>
+在 linux 中，当你启动一个进程的时候，子进程自动集成父进程的 namespace
+</p>
+
+<p>
+当你使用 unshare 的方式时会创建一个新的 namespace
+</p>
+
+<p>
+pause-container 就是做这个事情的，当启动一个 Pod 时，kubernetes 创建了一个 pause 容器
+</p>
+
+<p>
+并单独的创建了一个 net namespace，然后将其余的容器加入到了这个 pause 容器创建的 namespace 中
+</p>
+
+<p>
+Pod 中可以配置一个参数 shareProcessNamespace 控制是否可以共享 PID
+</p>
+
+<p>
+当你的 Pod 没有启用 该参数时，在 container 中 ps 发现 pid 1 是 images command 当启用时， pid 1 是 container-pause
+</p>
+
+<p>
+会用在一些特定的场景
+</p>
+
+<p>
+1.有一些镜像在 PID 不是 1 无法启动例如 systemd
+</p>
+
+<p>
+2./proc 下面文件共享
+</p>
+
+<p>
+3.文件系统共享 /proc/$pid/root
+</p>
+</div>
+</div>
+<div id="outline-container-org1a57565" class="outline-4">
+<h4 id="org1a57565"><span class="section-number-4">4.3.4</span> init containers</h4>
+<div class="outline-text-4" id="text-4-3-4">
+<p>
+在 Pod 中,你无法控制两个 container 的启动顺序，但是所有的 container 在启动之前都会先启动 init containers
+</p>
+
+<p>
+init containers 可以有多个，init containers 是有顺序的
+</p>
+
+<p>
+init containers 使用的是 linux namespace secrets
+</p>
+
+<p>
+init containers 场景
+</p>
+
+<p>
+1.加载一些工具
+</p>
+
+<p>
+2.可以作为应用的部署器
+</p>
+</div>
+</div>
+<div id="outline-container-org1700cf4" class="outline-4">
+<h4 id="org1700cf4"><span class="section-number-4">4.3.5</span> POD 的生命周期</h4>
+<div class="outline-text-4" id="text-4-3-5">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">value</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Pending</td>
+<td class="org-left">The Pod has been accepted by the Kubernetes system, but one or more of the Container images has not been created. This includes time before being scheduled as well as time spent downloading images over the network, which could take a while.</td>
+</tr>
+
+<tr>
+<td class="org-left">Running</td>
+<td class="org-left">The Pod has been bound to a node, and all of the Containers have been created. At least one Container is still running, or is in the process of starting or restarting</td>
+</tr>
+
+<tr>
+<td class="org-left">Succeeded</td>
+<td class="org-left">All Containers in the Pod have terminated in success, and will not be restarted.</td>
+</tr>
+
+<tr>
+<td class="org-left">Failed</td>
+<td class="org-left">All Containers in the Pod have terminated, and at least one Container has terminated in failure. That is, the Container either exited with non-zero status or was terminated by the system.</td>
+</tr>
+
+<tr>
+<td class="org-left">Unknown</td>
+<td class="org-left">For some reason the state of the Pod could not be obtained, typically due to an error in communicating with the host of the Pod</td>
+</tr>
+</tbody>
+</table>
+
+<div class="figure">
+<p><img src="./images/pod-phase.png" alt="pod-phase.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org793a265" class="outline-4">
+<h4 id="org793a265"><span class="section-number-4">4.3.6</span> Pod 的回收</h4>
+<div class="outline-text-4" id="text-4-3-6">
+<p>
+Pod 的回收在 kubernetes 中面临这样几个问题:
+</p>
+
+<p>
+1.清理 Pod 这个资源
+</p>
+
+<p>
+2.清理 Pod 关联的其他资源
+</p>
+
+<p>
+3.清理 Pod 中的容器
+</p>
+
+<p>
+简单的来看是这样的一个流程,但这其中还涉及 kubelet 的垃圾回收机制, 会在之后的章节中详细说明
+</p>
+
+<p>
+客户端请求删除 Pod &#x2013;&gt;
+</p>
+
+<p>
+apiserver 更新 Pod 信息 &#x2013;&gt;
+</p>
+
+<p>
+kubelet 优雅释放 Pod 资源 &#x2013;&gt;
+</p>
+
+<p>
+kubelet 请求删除 Pod &#x2013;&gt;
+</p>
+
+<p>
+apiserver 删除 etcd 中 Pod 信息&#x2013;&gt;
+</p>
+
+<p>
+kubelet完成最终Pod的资源清理
+</p>
+</div>
+</div>
+<div id="outline-container-orge6f52c6" class="outline-4">
+<h4 id="orge6f52c6"><span class="section-number-4">4.3.7</span> multi Pod 的实际场景</h4>
+<div class="outline-text-4" id="text-4-3-7">
+<p>
+     <img src="./images/sidecar.jpeg" alt="sidecar.jpeg" />
+sidecar 到 service mesh
+</p>
+
+<p>
+如果说 kubernetes 管理你的基础设施 service mesh 则管理应用的全部
+</p>
+
+<p>
+比如说 服务发现 融断 负载均衡 灰度发布甚至安全
+<img src="./images/service-mesh-nginx.png" alt="service-mesh-nginx.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgee34f8f" class="outline-3">
+<h3 id="orgee34f8f"><span class="section-number-3">4.4</span> 课后作业</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+1.简单论述 OCI 与 CRI 的区别
+</p>
+
+<p>
+2.使用提供的工具模拟一个 Pod
+tools:
+</p>
+<ul class="org-ul">
+<li>unshare</li>
+<li>docker run</li>
+</ul>
+<p>
+images:
+</p>
+<ul class="org-ul">
+<li>nginx</li>
+<li>daocloud.io/daocloud/dao-2048</li>
+<li>gcr.azk8s.cn/google_containers/pause:3.1</li>
+</ul>
+<p>
+config:
+</p>
+<div class="org-src-container">
+<pre class="src src-nginx"><span style="color: #b9ca4a;">cat</span> &lt;&lt;EOF &gt;&gt; nginx.conf
+<span style="color: #b9ca4a;">error_log</span> stderr;
+<span style="color: #b9ca4a;">events</span> <span style="color: #eaeaea;">{</span> worker_connections  1024; <span style="color: #eaeaea;">}</span>
+<span style="color: #b9ca4a;">http</span> <span style="color: #eaeaea;">{</span>
+    <span style="color: #b9ca4a;">access_log</span> /dev/stdout combined;
+    <span style="color: #b9ca4a;">server</span> <span style="color: #70c0b1;">{</span>
+        <span style="color: #b9ca4a;">listen</span> 8080 default_server;
+        <span style="color: #b9ca4a;">server_name</span> example.com www.example.com;
+        <span style="color: #b9ca4a;">location</span> <span style="color: #e78c45;">/</span> <span style="color: #e7c547;">{</span>
+            <span style="color: #b9ca4a;">proxy_pass</span> http://127.0.0.1:80;
+        <span style="color: #e7c547;">}</span>
+    <span style="color: #70c0b1;">}</span>
+<span style="color: #eaeaea;">}</span>
+<span style="color: #b9ca4a;">EOF</span>
+</pre>
+</div>
+<p>
+1.nginx 不暴露端口
+</p>
+
+<p>
+2.pause 暴露端口 30001:8080
+</p>
+
+<p>
+3.2048 不暴露端口
+</p>
+
+<p>
+4.当访问本地的 30001 端口时可以出现 2048 游戏界面
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org37e231b" class="outline-2">
+<h2 id="org37e231b"><span class="section-number-2">5</span> 3.部署你的第一个 kubernetes 集群</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org64d6832" class="outline-4">
+<h4 id="org64d6832"><span class="section-number-4">5.0.1</span> 课程大纲</h4>
+<div class="outline-text-4" id="text-5-0-1">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> 部署一个三个节点的 kubernetes 集群</li>
+<li class="off"><code>[&#xa0;]</code> 在 kubernetes 集群上部署一个经典的微服务程序</li>
+<li class="off"><code>[&#xa0;]</code> 了解 kubernetes 的 yaml 格式与写法</li>
+<li class="off"><code>[&#xa0;]</code> 了解 kubectl 的命令</li>
+<li class="off"><code>[&#xa0;]</code> 通过使用 kubectl 修改 yaml 完成对 deploy 的修改</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgebb78c2" class="outline-4">
+<h4 id="orgebb78c2"><span class="section-number-4">5.0.2</span> Links</h4>
+<div class="outline-text-4" id="text-5-0-2">
+<p>
+<a href="https://www.katacoda.com/courses/kubernetes/playground">https://www.katacoda.com/courses/kubernetes/playground</a>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org507aa0f" class="outline-2">
+<h2 id="org507aa0f"><span class="section-number-2">6</span> 4.Pod controllers</h2>
+</div>
+<div id="outline-container-orgc553b07" class="outline-2">
+<h2 id="orgc553b07"><span class="section-number-2">7</span> Service Loadbalanceing and Networking</h2>
+</div>
+<div id="outline-container-org5484c39" class="outline-2">
+<h2 id="org5484c39"><span class="section-number-2">8</span> Storage</h2>
+</div>
+<div id="outline-container-org8033def" class="outline-2">
+<h2 id="org8033def"><span class="section-number-2">9</span> Security</h2>
+</div>
+<div id="outline-container-org738d05a" class="outline-2">
+<h2 id="org738d05a"><span class="section-number-2">10</span> 初识 kubernetes 组件</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+<div id="outline-container-orgd480825" class="outline-4">
+<h4 id="orgd480825"><span class="section-number-4">10.0.1</span> 课程大纲</h4>
+<div class="outline-text-4" id="text-10-0-1">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> 了解 kubernetes 有哪些组件</li>
 <li class="off"><code>[&#xa0;]</code> 简介 kubernetes 内的对象与资源</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org3bb97d5" class="outline-4">
-<h4 id="org3bb97d5"><span class="section-number-4">3.2.2</span> kubernetes 的组件</h4>
-<div class="outline-text-4" id="text-3-2-2">
+<div id="outline-container-org68c9d79" class="outline-4">
+<h4 id="org68c9d79"><span class="section-number-4">10.0.2</span> kubernetes 的组件</h4>
+<div class="outline-text-4" id="text-10-0-2">
 </div>
 <ol class="org-ol">
-<li><a id="org0e44878"></a>kubelet<br /></li>
-<li><a id="orgf0ad03f"></a>api-server<br /></li>
-<li><a id="org13d3b09"></a>kube-controller<br /></li>
-<li><a id="orga065cb4"></a>scheduler<br /></li>
-<li><a id="org8ef6077"></a>kube-proxy<br /></li>
-<li><a id="org2b9a1ef"></a>etcd<br /></li>
-<li><a id="org55d5f48"></a>core-dns<br /></li>
+<li><a id="orgd6606e4"></a>kubelet<br /></li>
+<li><a id="org7e6da59"></a>api-server<br /></li>
+<li><a id="orgd02093f"></a>kube-controller<br /></li>
+<li><a id="orgfa3451f"></a>scheduler<br /></li>
+<li><a id="org6ce98a1"></a>kube-proxy<br /></li>
+<li><a id="orgadf641b"></a>etcd<br /></li>
+<li><a id="orgf26b75e"></a>core-dns<br /></li>
 </ol>
 </div>
-<div id="outline-container-orgb65fe96" class="outline-4">
-<h4 id="orgb65fe96"><span class="section-number-4">3.2.3</span> kubernetes 的资源</h4>
-<div class="outline-text-4" id="text-3-2-3">
-</div>
-<ol class="org-ol">
-<li><a id="org39919a5"></a>pod<br /></li>
-<li><a id="org7fccf95"></a>deployment<br /></li>
-<li><a id="org44e66ac"></a>service<br /></li>
-<li><a id="orgb91b529"></a>statefulset<br /></li>
-<li><a id="orgc3bb750"></a>daemonset<br /></li>
-<li><a id="org90c7bf1"></a>comfigmap<br /></li>
-<li><a id="org3760ef2"></a>cronjob<br /></li>
-<li><a id="orgdd8bdf5"></a>job<br /></li>
-<li><a id="org9d3198c"></a>ingress<br /></li>
-<li><a id="orge361836"></a>nodes<br /></li>
-<li><a id="org2fb3636"></a>namespace<br /></li>
-<li><a id="org5d00fd9"></a>secrets<br /></li>
-<li><a id="org57ab232"></a>rbac<br /></li>
-<li><a id="orga12fdaf"></a>pv pvc storageclass<br /></li>
-<li><a id="org934748c"></a>endpoints<br /></li>
-<li><a id="org9c667a0"></a>events<br /></li>
-</ol>
-</div>
-<div id="outline-container-org8294da7" class="outline-4">
-<h4 id="org8294da7"><span class="section-number-4">3.2.4</span> Links</h4>
-</div>
-</div>
-<div id="outline-container-org9455562" class="outline-3">
-<h3 id="org9455562"><span class="section-number-3">3.3</span> 3.部署你的第一个 kubernetes 集群</h3>
-<div class="outline-text-3" id="text-3-3">
-</div>
-<div id="outline-container-org9ec14de" class="outline-4">
-<h4 id="org9ec14de"><span class="section-number-4">3.3.1</span> 课程大纲</h4>
-<div class="outline-text-4" id="text-3-3-1">
-<ul class="org-ul">
-<li class="off"><code>[&#xa0;]</code> 部署一个三个节点的 kubernetes 集群</li>
-<li class="off"><code>[&#xa0;]</code> 在 kubernetes 集群上部署一个经典的微服务程序</li>
-<li class="off"><code>[&#xa0;]</code> 了解 kubernetes 的 yaml 格式与写法</li>
-<li class="off"><code>[&#xa0;]</code> 了解 kubectl 的命令</li>
-<li class="off"><code>[&#xa0;]</code> 通过使用 kubectl 修改 yaml 完成对 deploy 与 service 的修改</li>
-</ul>
-</div>
-</div>
+<div id="outline-container-org8dd2e49" class="outline-4">
+<h4 id="org8dd2e49"><span class="section-number-4">10.0.3</span> Links</h4>
 </div>
 </div>
 <div id="footnotes">
@@ -809,12 +1245,16 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 <a href="https://github.com/opencontainers">https://github.com/opencontainers</a>
 </p></div></div>
 
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://github.com/kubernetes/kubernetes/blob/242a97307b34076d5d8f5bbeb154fa4d97c9ef1d/pkg/kubelet/api/v1alpha1/runtime/api.proto">https://github.com/kubernetes/kubernetes/blob/242a97307b34076d5d8f5bbeb154fa4d97c9ef1d/pkg/kubelet/api/v1alpha1/runtime/api.proto</a>
+</p></div></div>
+
 
 </div>
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: Byron Wang</p>
-<p class="date">Created: 2019-12-06 Fri 15:19</p>
+<p class="date">Created: 2019-12-13 Fri 12:06</p>
 <p class="validation"></p>
 </div>
 </body>

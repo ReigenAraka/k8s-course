@@ -17,15 +17,14 @@
   时间:每周五下午 16:00-17:00
   时间安排: 45min(讲解) + 15min(答疑)
   作业形式: 问卷与实际操作
-* 课程内容
-** 1.了解 kubernetes 之前<2019-12-06 Fri>
-*** 课程大纲
+* 了解 kubernetes 之前<2019-12-06 Fri>
+** 课程大纲
 - 操作系统基础
 - 简介 docker 与 container
 - docker 与虚拟机的区别
 - 认识什么是 kubernetes
-*** Cgroup、Container 与 OCI
-**** cgroups & namespaces & chroot & systemd
+** Cgroup、Container 与 OCI
+*** cgroups & namespaces & chroot & systemd
 cgroups[fn:1-1] 用来控制一个每个服务的 CPU、mem、block I/O、device、net(tc)
 
 namespaces[fn:1-2] 用来做进程之间的隔离;UTS:主机 域名 IPC: 信号量 消息队列 共享内存 PID Network:设备 端口 网络栈 Mount: fs User:group user
@@ -33,7 +32,7 @@ namespaces[fn:1-2] 用来做进程之间的隔离;UTS:主机 域名 IPC: 信号�
 chroot[fn:1-4] 用于将一个进程及其子进程的根目录改变到文件系统中的一个新位置，让这些进程只能访问到该目录。这个功能的想法是为每个进程提供独立的磁盘空间
 
 systemd[fn:1-5] 用来启动守护进程,处理依赖关系
-**** Container 的前世今生
+*** Container 的前世今生
 - 1979 — chroot 一切的开始
 - 2000 — FreeBSD Jails 支持进程沙盒
 - 2001 — Linux VServer  加入 security context
@@ -49,7 +48,7 @@ systemd[fn:1-5] 用来启动守护进程,处理依赖关系
 - 2017 — Pouch 富容器 Alibaba
 - 2018 — Podman without of daemon
 - 2018 — WIndows Containers Windows-base
-**** OCI
+*** OCI
 open container initiative[fn:1-7]
 
 Linux 基金会制定一个开放的工业化标准：容器运行时标准 （runtime spec）和 容器镜像标准（image spec）
@@ -66,10 +65,10 @@ Linux 基金会制定一个开放的工业化标准：容器运行时标准 （r
   容器暂停
   容器暂停信号捕获
   容器的生命周期: init creating created running stopped
-**** docker 中容器的创建
+*** docker 中容器的创建
 [[file:images/docker-runc.png]]
-*** Docker 与虚拟机
-**** 主流虚拟机的原理
+** Docker 与虚拟机
+*** 主流虚拟机的原理
 ***** 虚拟化技术
 - I型虚拟机
   直接跑在裸机上，虚拟机软件模拟了完整的底层硬件;从 Cpu、时钟到外接设备
@@ -79,16 +78,16 @@ Linux 基金会制定一个开放的工业化标准：容器运行时标准 （r
   运行在宿主机的操作系统之上,所有的操作都借助于宿主机的操作系统
 
   代表技术: VMWare Workstation Hyper-V
-**** 容器与虚拟机
+*** 容器与虚拟机
 容器本身是虚拟化技术中的一种,作为最轻量级的虚拟化方案出现
 
 但容器与虚拟机有本质上的区别
 
 容器实际上是一个进程，而虚拟机则是一个完整的操作系统
-*** kubernetes 是什么
+** kubernetes 是什么
 Production-Grade Container Scheduling and Management
 这是 kubernetes github 仓库上对这个项目的描述
-**** 我们为什么需要编排
+*** 我们为什么需要编排
 我们不妨了解一下小明的故事
 ***** 小明是一个开发者
       小明是一个开发者，这一天他想到了一个点子，他做了一个静态的网站，现在他想把网站上线。
@@ -117,7 +116,7 @@ Production-Grade Container Scheduling and Management
       小明经过排查发现，由于 DNS 的原因之前的每个用户一般都被会到特定的几台机器上，由于 NFS 挂载的不是相同的目录，造成目录之间数据
       不一致。现在用户的请求统一经过运营商的负载均衡，导致用户的内容丢失。在加上运营商机器并不是很稳定，导致服务器经常失连。
       小明已经陷入了深深的运维漩涡当中，小明不想再维护了。
-**** kubernetes 的历史
+*** kubernetes 的历史
      kubernetes 由 Google 内部的编排系统 Borg 演化出来
 
      2014 年 6 月揭牌
@@ -125,8 +124,8 @@ Production-Grade Container Scheduling and Management
      2015年7月22日K8S迭代到 v 1.0并正式对外公布
 
      如今已经正式版本已到 1.16.3
-*** kubernetes 生态与社区
-**** kubernetes 生态中的明星
+** kubernetes 生态与社区
+*** kubernetes 生态中的明星
 ***** 网络
 - flannel
 - calico
@@ -138,7 +137,7 @@ Production-Grade Container Scheduling and Management
 - prometheus
 - istio
 - knative
-**** kubernetes 社区
+*** kubernetes 社区
 https://github.com/kubernetes/kubernetes
 
 | Project    | contributors | commit | issue |   PR | members | release | star  | fork  |
@@ -150,15 +149,8 @@ https://github.com/kubernetes/kubernetes
 [[file:images/k8s-ans.png]]
 
 [[file:images/docker-ans.png]]
-*** Links
-[fn:1-1]http://man7.org/linux/man-pages/man7/cgroups.7.html
-[fn:1-2]http://man7.org/linux/man-pages/man7/namespaces.7.html
-[fn:1-3]http://man7.org/linux/man-pages/man1/chroot.1.html
-[fn:1-4]http://man7.org/linux/man-pages/man2/chroot.2.html
-[fn:1-5]http://man7.org/linux/man-pages/man1/init.1.html
-[fn:1-6]https://linux.cn/article-6975-1.html
-[fn:1-7]https://github.com/opencontainers
-*** 课后作业
+** 课后作业
+
 1.安装 docker,并运行一个 nginx
 
 2.给一个容器设置 --cpus  --cpuset-cpus 并观察 cpu 的使用
@@ -166,22 +158,199 @@ https://github.com/kubernetes/kubernetes
 3.一个四核的机器上设置 --cpus=2.5 --cpuset-cpus="0,1" 那么容器最多可以占用多少 cpu 资源?为什么？
 
 请将 1 、3 两个问题的答案发送至邮箱,截至日期为下次课程开始之前
-** 2.Containers Pods 与 workloads
-*** 课程大纲
-- [ ] containers 的生命周期与 RuntimeClass
-- [ ] pods 与 containers
-- [ ] 谁在掌控 pods 的生死
-** 3.部署你的第一个 kubernetes 集群
+[fn:1-1]http://man7.org/linux/man-pages/man7/cgroups.7.html
+[fn:1-2]http://man7.org/linux/man-pages/man7/namespaces.7.html
+[fn:1-3]http://man7.org/linux/man-pages/man1/chroot.1.html
+[fn:1-4]http://man7.org/linux/man-pages/man2/chroot.2.html
+[fn:1-5]http://man7.org/linux/man-pages/man1/init.1.html
+[fn:1-6]https://linux.cn/article-6975-1.html
+[fn:1-7]https://github.com/opencontainers
+* Containers 与 Pods<2019-12-13 Fri>
+** 课程大纲
+- [ ] 了解 CRI 以及 CRI 的意义，从而了解 k8s 的方向
+- [ ] 明白 pods 与 containers 的区别与关系
+- [ ] 了解 pods 的原理
+- [ ] 初识 k8s yaml
+** CRI
+    [[file:./images/松溪观鹿图.jpeg]]
+*** CRI 的意义
+     kubernetes 将其可以剥离开的部分转换为接口对外开放出去
+
+     1.减少核心的代码可以保证代码稳定性与产品质量
+
+     2.k8s 不依赖于某几种场景，这种方式带给 k8s 更多的可能
+
+     CRI 就是其开放出去的一个，CRI (container runtime interface)
+
+     CRI 的出现是对 Docker 的一个巨大打击 CRI 出现在 kubernetes 1.5 的版本中 2016 年 12 月，而正是此时，docker 公司正在进行他的商业化的第一步
+
+     Docker 的最大优势在于庞大的用户与及其优秀的生态,许多人都是从 Docker 才了解了容器，包括现在仍然有许多人提起容器仅能想起 Docker
+
+     kubernetes 一定不会将自己与 Docker 捆绑在同一条船上，CRI 出现之前尚可称为同床异梦,而在这之后则是真正的分居
+
+     kubernetes 在此刻已经展现了自己的爪牙
+*** CRI 的接口
+     CRI Proto[fn:2-1]
+     #+BEGIN_SRC go
+     service RuntimeService {
+         rpc Version(VersionRequest) returns (VersionResponse) {}
+         rpc RunPodSandbox(RunPodSandboxRequest) returns (RunPodSandboxResponse) {}
+         rpc StopPodSandbox(StopPodSandboxRequest) returns (StopPodSandboxResponse) {}
+         rpc RemovePodSandbox(RemovePodSandboxRequest) returns (RemovePodSandboxResponse) {}
+         rpc PodSandboxStatus(PodSandboxStatusRequest) returns (PodSandboxStatusResponse) {}
+         rpc ListPodSandbox(ListPodSandboxRequest) returns (ListPodSandboxResponse) {}
+         rpc CreateContainer(CreateContainerRequest) returns (CreateContainerResponse) {}
+         rpc StartContainer(StartContainerRequest) returns (StartContainerResponse) {}
+         rpc StopContainer(StopContainerRequest) returns (StopContainerResponse) {}
+         rpc RemoveContainer(RemoveContainerRequest) returns (RemoveContainerResponse) {}
+         rpc ListContainers(ListContainersRequest) returns (ListContainersResponse) {}
+         rpc ContainerStatus(ContainerStatusRequest) returns (ContainerStatusResponse) {}
+         rpc ExecSync(ExecSyncRequest) returns (ExecSyncResponse) {}
+         rpc Exec(ExecRequest) returns (ExecResponse) {}
+         rpc Attach(AttachRequest) returns (AttachResponse) {}
+         rpc PortForward(PortForwardRequest) returns (PortForwardResponse) {}
+         rpc UpdateRuntimeConfig(UpdateRuntimeConfigRequest) returns (UpdateRuntimeConfigResponse) {}
+         rpc Status(StatusRequest) returns (StatusResponse) {}
+     }
+     #+END_SRC
+     这里有了个新的概念 PodSandbox
+     就是我们下面要说到的 Pod
+** 容器与 Pod
+*** Pod 是什么
+     [[file:./images/pods.jpg]]
+
+     Pod 是 kubernetes 中部署与调度的最小单元
+
+     听起来是不是似曾相识
+*** Pod 里面有什么
+     [[file:./images/pods.png]]
+
+Pod 内的容器共享网络与存储
+
+     这意味着在同一个 Pod 中的容器有着相同的 IP 与端口
+*** Pod 实现原理
+pause-container 是实现 Pod 共享 namespace 的原因
+
+在 linux 中，当你启动一个进程的时候，子进程自动集成父进程的 namespace
+
+当你使用 unshare 的方式时会创建一个新的 namespace
+
+pause-container 就是做这个事情的，当启动一个 Pod 时，kubernetes 创建了一个 pause 容器
+
+并单独的创建了一个 net namespace，然后将其余的容器加入到了这个 pause 容器创建的 namespace 中
+
+Pod 中可以配置一个参数 shareProcessNamespace 控制是否可以共享 PID
+
+当你的 Pod 没有启用 该参数时，在 container 中 ps 发现 pid 1 是 images command 当启用时， pid 1 是 container-pause
+
+会用在一些特定的场景
+
+1.有一些镜像在 PID 不是 1 无法启动例如 systemd
+
+2./proc 下面文件共享
+
+3.文件系统共享 /proc/$pid/root
+*** init containers
+在 Pod 中,你无法控制两个 container 的启动顺序，但是所有的 container 在启动之前都会先启动 init containers
+
+init containers 可以有多个，init containers 是有顺序的
+
+init containers 使用的是 linux namespace secrets
+
+init containers 场景
+
+1.加载一些工具
+
+2.可以作为应用的部署器
+*** POD 的生命周期
+| value     | Description                                                                                                                                                                                                                                      |
+|-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Pending   | The Pod has been accepted by the Kubernetes system, but one or more of the Container images has not been created. This includes time before being scheduled as well as time spent downloading images over the network, which could take a while. |
+| Running   | The Pod has been bound to a node, and all of the Containers have been created. At least one Container is still running, or is in the process of starting or restarting                                                                           |
+| Succeeded | All Containers in the Pod have terminated in success, and will not be restarted.                                                                                                                                                                 |
+| Failed    | All Containers in the Pod have terminated, and at least one Container has terminated in failure. That is, the Container either exited with non-zero status or was terminated by the system.                                                      |
+| Unknown   | For some reason the state of the Pod could not be obtained, typically due to an error in communicating with the host of the Pod                                                                                                                  |
+[[file:./images/pod-phase.png]]
+*** Pod 的回收
+Pod 的回收在 kubernetes 中面临这样几个问题:
+
+1.清理 Pod 这个资源
+
+2.清理 Pod 关联的其他资源
+
+3.清理 Pod 中的容器
+
+简单的来看是这样的一个流程,但这其中还涉及 kubelet 的垃圾回收机制, 会在之后的章节中详细说明
+
+客户端请求删除 Pod -->
+
+apiserver 更新 Pod 信息 -->
+
+kubelet 优雅释放 Pod 资源 -->
+
+kubelet 请求删除 Pod -->
+
+apiserver 删除 etcd 中 Pod 信息-->
+
+kubelet完成最终Pod的资源清理
+*** multi Pod 的实际场景
+     [[file:./images/sidecar.jpeg]]
+sidecar 到 service mesh
+
+如果说 kubernetes 管理你的基础设施 service mesh 则管理应用的全部
+
+比如说 服务发现 融断 负载均衡 灰度发布甚至安全
+[[file:./images/service-mesh-nginx.png]]
+** 课后作业
+1.简单论述 OCI 与 CRI 的区别
+
+2.使用提供的工具模拟一个 Pod
+tools:
+- unshare
+- docker run
+images:
+- nginx
+- daocloud.io/daocloud/dao-2048
+- gcr.azk8s.cn/google_containers/pause:3.1
+config:
+#+BEGIN_SRC nginx
+cat <<EOF >> nginx.conf
+error_log stderr;
+events { worker_connections  1024; }
+http {
+    access_log /dev/stdout combined;
+    server {
+        listen 8080 default_server;
+        server_name example.com www.example.com;
+        location / {
+            proxy_pass http://127.0.0.1:80;
+        }
+    }
+}
+EOF
+#+END_SRC
+1.nginx 不暴露端口
+
+2.pause 暴露端口 30001:8080
+
+3.2048 不暴露端口
+
+4.当访问本地的 30001 端口时可以出现 2048 游戏界面
+[fn:2-1] https://github.com/kubernetes/kubernetes/blob/242a97307b34076d5d8f5bbeb154fa4d97c9ef1d/pkg/kubelet/api/v1alpha1/runtime/api.proto
+* 3.部署你的第一个 kubernetes 集群
 *** 课程大纲
 - [ ] 部署一个三个节点的 kubernetes 集群
 - [ ] 在 kubernetes 集群上部署一个经典的微服务程序
 - [ ] 了解 kubernetes 的 yaml 格式与写法
 - [ ] 了解 kubectl 的命令
 - [ ] 通过使用 kubectl 修改 yaml 完成对 deploy 的修改
-** 4.Service Loadbalanceing and Networking
-** 5.Storage
-** 6.Security
-** 初识 kubernetes 组件
+*** Links
+    https://www.katacoda.com/courses/kubernetes/playground
+* 4.Pod controllers
+* Service Loadbalanceing and Networking
+* Storage
+* Security
+* 初识 kubernetes 组件
 *** 课程大纲
 - [ ] 了解 kubernetes 有哪些组件
 - [ ] 简介 kubernetes 内的对象与资源
