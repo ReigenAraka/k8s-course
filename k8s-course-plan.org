@@ -229,9 +229,9 @@ Pod 内的容器共享网络与存储
 
      这意味着在同一个 Pod 中的容器有着相同的 IP 与端口
 *** Pod 实现原理
-pause-container 是实现 Pod 共享 namespace 的原因
+pause-container 是实现 Pod 共享 namespace 的基础
 
-在 linux 中，当你启动一个进程的时候，子进程自动集成父进程的 namespace
+在 linux 中，当你启动一个进程的时候，子进程自动继承父进程的 namespace
 
 当你使用 unshare 的方式时会创建一个新的 namespace
 
@@ -245,13 +245,14 @@ Pod 中可以配置一个参数 shareProcessNamespace 控制是否可以共享 P
 
 当启用时， pid 1 是 pause
 
-会用在一些特定的场景
+shareProcessNamespace 会用在一些特定的场景
 
 1.有一些镜像在 PID 不是 1 无法启动例如 systemd
 
 2./proc 下面文件共享
 
 3.文件系统共享 /proc/$pid/root
+
 *** init containers
 在 Pod 中,你无法控制两个 container 的启动顺序，但是所有的 container 在启动之前都会先启动 init containers
 
