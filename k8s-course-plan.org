@@ -241,7 +241,9 @@ pause-container 就是做这个事情的，当启动一个 Pod 时，kubernetes 
 
 Pod 中可以配置一个参数 shareProcessNamespace 控制是否可以共享 PID
 
-当你的 Pod 没有启用 该参数时，在 container 中 ps 发现 pid 1 是 images command 当启用时， pid 1 是 container-pause
+当你的 Pod 没有启用该参数时，在 container 中可以发现 pid 1 是 container commands
+
+当启用时， pid 1 是 pause
 
 会用在一些特定的场景
 
