@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-13 Fri 18:28 -->
+<!-- 2019-12-20 Fri 15:05 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>K8s course</title>
@@ -240,88 +240,112 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org802aca1">1. 课程目的</a>
+<li><a href="#org94c5ca0">1. 课程目的</a>
 <ul>
-<li><a href="#org2208b24">1.1. 进阶要求</a></li>
+<li><a href="#orgc69cf21">1.1. 进阶要求</a></li>
 </ul>
 </li>
-<li><a href="#org99b3b46">2. 课程安排</a></li>
-<li><a href="#orgea487b1">3. 了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></a>
+<li><a href="#orgfe85341">2. 课程安排</a></li>
+<li><a href="#org05c057c">3. 了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></a>
 <ul>
-<li><a href="#org8c4804c">3.1. 课程大纲</a></li>
-<li><a href="#org7895e61">3.2. Cgroup、Container 与 OCI</a>
+<li><a href="#orgd708e42">3.1. 课程大纲</a></li>
+<li><a href="#orgf77bf4c">3.2. Cgroup、Container 与 OCI</a>
 <ul>
-<li><a href="#orgf289a1a">3.2.1. cgroups &amp; namespaces &amp; chroot &amp; systemd</a></li>
-<li><a href="#orgd7ee07a">3.2.2. Container 的前世今生</a></li>
-<li><a href="#org66d5e6a">3.2.3. OCI</a></li>
-<li><a href="#org9f9c9b6">3.2.4. docker 中容器的创建</a></li>
+<li><a href="#orgcaddb58">3.2.1. cgroups &amp; namespaces &amp; chroot &amp; systemd</a></li>
+<li><a href="#orga1eeb3a">3.2.2. Container 的前世今生</a></li>
+<li><a href="#orga9a4918">3.2.3. OCI</a></li>
+<li><a href="#orgaeb7c40">3.2.4. docker 中容器的创建</a></li>
 </ul>
 </li>
-<li><a href="#orgfb5af7a">3.3. Docker 与虚拟机</a>
+<li><a href="#org7e796db">3.3. Docker 与虚拟机</a>
 <ul>
-<li><a href="#org2892cc3">3.3.1. 主流虚拟机的原理</a></li>
-<li><a href="#orgaa85497">3.3.2. 容器与虚拟机</a></li>
+<li><a href="#orgfda4a86">3.3.1. 主流虚拟机的原理</a></li>
+<li><a href="#org2b1655d">3.3.2. 容器与虚拟机</a></li>
 </ul>
 </li>
-<li><a href="#orgdc75461">3.4. kubernetes 是什么</a>
+<li><a href="#org7237282">3.4. kubernetes 是什么</a>
 <ul>
-<li><a href="#org2075ed9">3.4.1. 我们为什么需要编排</a></li>
-<li><a href="#orgd7430fc">3.4.2. kubernetes 的历史</a></li>
+<li><a href="#org0f61e6a">3.4.1. 我们为什么需要编排</a></li>
+<li><a href="#org9c672cc">3.4.2. kubernetes 的历史</a></li>
 </ul>
 </li>
-<li><a href="#orged76d7d">3.5. kubernetes 生态与社区</a>
+<li><a href="#orgd5504c8">3.5. kubernetes 生态与社区</a>
 <ul>
-<li><a href="#org9da3ed1">3.5.1. kubernetes 生态中的明星</a></li>
-<li><a href="#orgd9b21ab">3.5.2. kubernetes 社区</a></li>
+<li><a href="#org47aa653">3.5.1. kubernetes 生态中的明星</a></li>
+<li><a href="#org469f6f1">3.5.2. kubernetes 社区</a></li>
 </ul>
 </li>
-<li><a href="#orgb183b9e">3.6. 课后作业</a></li>
+<li><a href="#org3d7a092">3.6. 课后作业</a></li>
 </ul>
 </li>
-<li><a href="#org020c011">4. Containers 与 Pods<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-13 Fri&gt;</span></span></a>
+<li><a href="#org4c3ea72">4. Containers 与 Pods<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-13 Fri&gt;</span></span></a>
 <ul>
-<li><a href="#org0a2b7fe">4.1. 课程大纲</a></li>
-<li><a href="#org5a346be">4.2. CRI</a>
+<li><a href="#org3cdaef5">4.1. 课程大纲</a></li>
+<li><a href="#org022a2e6">4.2. CRI</a>
 <ul>
-<li><a href="#org4f1fa1f">4.2.1. CRI 的意义</a></li>
-<li><a href="#orgeb639ac">4.2.2. CRI 的接口</a></li>
+<li><a href="#orgb1c1588">4.2.1. CRI 的意义</a></li>
+<li><a href="#org8f2bc9e">4.2.2. CRI 的接口</a></li>
 </ul>
 </li>
-<li><a href="#orgfea3345">4.3. 容器与 Pod</a>
+<li><a href="#orge98b287">4.3. 容器与 Pod</a>
 <ul>
-<li><a href="#org439c0d9">4.3.1. Pod 是什么</a></li>
-<li><a href="#org5471e04">4.3.2. Pod 里面有什么</a></li>
-<li><a href="#org8098348">4.3.3. Pod 实现原理</a></li>
-<li><a href="#orgc80f190">4.3.4. init containers</a></li>
-<li><a href="#orgc51022a">4.3.5. POD 的生命周期</a></li>
-<li><a href="#orga00034e">4.3.6. Pod 的回收</a></li>
-<li><a href="#orgc374f33">4.3.7. multi Pod 的实际场景</a></li>
+<li><a href="#org7a141f2">4.3.1. Pod 是什么</a></li>
+<li><a href="#orgc308072">4.3.2. Pod 里面有什么</a></li>
+<li><a href="#orgcb3361e">4.3.3. Pod 实现原理</a></li>
+<li><a href="#orgbdfaf5f">4.3.4. init containers</a></li>
+<li><a href="#org9b184a4">4.3.5. POD 的生命周期</a></li>
+<li><a href="#orga6831a7">4.3.6. Pod 的回收</a></li>
+<li><a href="#org83a7015">4.3.7. multi Pod 的实际场景</a></li>
 </ul>
 </li>
-<li><a href="#orgec1fabe">4.4. 课后作业</a></li>
+<li><a href="#orgaaceafb">4.4. 课后作业</a></li>
 </ul>
 </li>
-<li><a href="#orgd559e4c">5. 3.部署你的第一个 kubernetes 集群</a>
+<li><a href="#org0d53496">5. Yaml 与 kubectl <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-20 Fri&gt;</span></span></a>
+<ul>
+<li><a href="#org6c1752f">5.1. 课程大纲</a></li>
+<li><a href="#org6011a80">5.2. kubernetes yaml</a>
+<ul>
+<li><a href="#org0c1dcf5">5.2.1. annotation</a></li>
+<li><a href="#org551177b">5.2.2. label &amp;&amp; selector</a></li>
+<li><a href="#org438af54">5.2.3. namespace</a></li>
+<li><a href="#orgd4e5a65">5.2.4. apiVersion</a></li>
+<li><a href="#org1e210a5">5.2.5. toleration &amp;&amp; taint</a></li>
+</ul>
+</li>
+<li><a href="#org6d63a59">5.3. kubectl</a>
+<ul>
+<li><a href="#orgee777da">5.3.1. kubectl get</a></li>
+<li><a href="#org88dab12">5.3.2. kubectl apply</a></li>
+<li><a href="#org79f2683">5.3.3. kubectl logs</a></li>
+<li><a href="#org6730f0d">5.3.4. kubectl exec</a></li>
+<li><a href="#org9093fe3">5.3.5. kubectl edit</a></li>
+</ul>
+</li>
+<li><a href="#orgabe0cef">5.4. 作业</a></li>
+</ul>
+</li>
+<li><a href="#org5e579f4">6. 部署你的第一个 kubernetes 集群</a>
 <ul>
 <li>
 <ul>
-<li><a href="#orgd8fdee2">5.0.1. 课程大纲</a></li>
-<li><a href="#orge3e9c3a">5.0.2. Links</a></li>
+<li><a href="#org7594032">6.0.1. 课程大纲</a></li>
+<li><a href="#org4f98f12">6.0.2. Links</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgfe42a49">6. 4.Pod controllers</a></li>
-<li><a href="#org09d652d">7. Service Loadbalanceing and Networking</a></li>
-<li><a href="#org0c3e2f4">8. Storage</a></li>
-<li><a href="#org56eab04">9. Security</a></li>
-<li><a href="#orge00a9bb">10. 初识 kubernetes 组件</a>
+<li><a href="#org3ac4246">7. Pod controllers</a></li>
+<li><a href="#org9660c42">8. Service Loadbalanceing and Networking</a></li>
+<li><a href="#org319ca01">9. Storage</a></li>
+<li><a href="#org6fb244f">10. Security</a></li>
+<li><a href="#orga3e75ea">11. 初识 kubernetes 组件</a>
 <ul>
 <li>
 <ul>
-<li><a href="#org11303e1">10.0.1. 课程大纲</a></li>
-<li><a href="#org7a954f5">10.0.2. kubernetes 的组件</a></li>
-<li><a href="#org925a4f2">10.0.3. Links</a></li>
+<li><a href="#org579f808">11.0.1. 课程大纲</a></li>
+<li><a href="#org629b393">11.0.2. kubernetes 的组件</a></li>
+<li><a href="#org2ac305a">11.0.3. Links</a></li>
 </ul>
 </li>
 </ul>
@@ -329,8 +353,8 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-org802aca1" class="outline-2">
-<h2 id="org802aca1"><span class="section-number-2">1</span> 课程目的</h2>
+<div id="outline-container-org94c5ca0" class="outline-2">
+<h2 id="org94c5ca0"><span class="section-number-2">1</span> 课程目的</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>可以独立安装 k8s 集群</li>
@@ -340,8 +364,8 @@ for the JavaScript code in this tag.
 <li>具备通过 ckad 的能力</li>
 </ul>
 </div>
-<div id="outline-container-org2208b24" class="outline-3">
-<h3 id="org2208b24"><span class="section-number-3">1.1</span> 进阶要求</h3>
+<div id="outline-container-orgc69cf21" class="outline-3">
+<h3 id="orgc69cf21"><span class="section-number-3">1.1</span> 进阶要求</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>可以实现一个 CNI/CRD/CCM</li>
@@ -350,8 +374,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org99b3b46" class="outline-2">
-<h2 id="org99b3b46"><span class="section-number-2">2</span> 课程安排</h2>
+<div id="outline-container-orgfe85341" class="outline-2">
+<h2 id="orgfe85341"><span class="section-number-2">2</span> 课程安排</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 地点:会议室
@@ -361,12 +385,12 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
-<div id="outline-container-orgea487b1" class="outline-2">
-<h2 id="orgea487b1"><span class="section-number-2">3</span> 了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></h2>
+<div id="outline-container-org05c057c" class="outline-2">
+<h2 id="org05c057c"><span class="section-number-2">3</span> 了解 kubernetes 之前<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-06 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org8c4804c" class="outline-3">
-<h3 id="org8c4804c"><span class="section-number-3">3.1</span> 课程大纲</h3>
+<div id="outline-container-orgd708e42" class="outline-3">
+<h3 id="orgd708e42"><span class="section-number-3">3.1</span> 课程大纲</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>操作系统基础</li>
@@ -376,12 +400,12 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-org7895e61" class="outline-3">
-<h3 id="org7895e61"><span class="section-number-3">3.2</span> Cgroup、Container 与 OCI</h3>
+<div id="outline-container-orgf77bf4c" class="outline-3">
+<h3 id="orgf77bf4c"><span class="section-number-3">3.2</span> Cgroup、Container 与 OCI</h3>
 <div class="outline-text-3" id="text-3-2">
 </div>
-<div id="outline-container-orgf289a1a" class="outline-4">
-<h4 id="orgf289a1a"><span class="section-number-4">3.2.1</span> cgroups &amp; namespaces &amp; chroot &amp; systemd</h4>
+<div id="outline-container-orgcaddb58" class="outline-4">
+<h4 id="orgcaddb58"><span class="section-number-4">3.2.1</span> cgroups &amp; namespaces &amp; chroot &amp; systemd</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
 cgroups<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> 用来控制一个每个服务的 CPU、mem、block I/O、device、net(tc)
@@ -400,8 +424,8 @@ systemd<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> 用来启动�
 </p>
 </div>
 </div>
-<div id="outline-container-orgd7ee07a" class="outline-4">
-<h4 id="orgd7ee07a"><span class="section-number-4">3.2.2</span> Container 的前世今生</h4>
+<div id="outline-container-orga1eeb3a" class="outline-4">
+<h4 id="orga1eeb3a"><span class="section-number-4">3.2.2</span> Container 的前世今生</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <ul class="org-ul">
 <li>1979 — chroot 一切的开始</li>
@@ -422,8 +446,8 @@ systemd<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> 用来启动�
 </ul>
 </div>
 </div>
-<div id="outline-container-org66d5e6a" class="outline-4">
-<h4 id="org66d5e6a"><span class="section-number-4">3.2.3</span> OCI</h4>
+<div id="outline-container-orga9a4918" class="outline-4">
+<h4 id="orga9a4918"><span class="section-number-4">3.2.3</span> OCI</h4>
 <div class="outline-text-4" id="text-3-2-3">
 <p>
 open container initiative<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>
@@ -449,8 +473,8 @@ PID
 </ul>
 </div>
 </div>
-<div id="outline-container-org9f9c9b6" class="outline-4">
-<h4 id="org9f9c9b6"><span class="section-number-4">3.2.4</span> docker 中容器的创建</h4>
+<div id="outline-container-orgaeb7c40" class="outline-4">
+<h4 id="orgaeb7c40"><span class="section-number-4">3.2.4</span> docker 中容器的创建</h4>
 <div class="outline-text-4" id="text-3-2-4">
 
 <div class="figure">
@@ -460,16 +484,16 @@ PID
 </div>
 </div>
 </div>
-<div id="outline-container-orgfb5af7a" class="outline-3">
-<h3 id="orgfb5af7a"><span class="section-number-3">3.3</span> Docker 与虚拟机</h3>
+<div id="outline-container-org7e796db" class="outline-3">
+<h3 id="org7e796db"><span class="section-number-3">3.3</span> Docker 与虚拟机</h3>
 <div class="outline-text-3" id="text-3-3">
 </div>
-<div id="outline-container-org2892cc3" class="outline-4">
-<h4 id="org2892cc3"><span class="section-number-4">3.3.1</span> 主流虚拟机的原理</h4>
+<div id="outline-container-orgfda4a86" class="outline-4">
+<h4 id="orgfda4a86"><span class="section-number-4">3.3.1</span> 主流虚拟机的原理</h4>
 <div class="outline-text-4" id="text-3-3-1">
 </div>
 <ol class="org-ol">
-<li><a id="org65f710c"></a>虚拟化技术<br />
+<li><a id="orgcab1e97"></a>虚拟化技术<br />
 <div class="outline-text-6" id="text-3-3-1-0-1">
 <ul class="org-ul">
 <li><p>
@@ -493,8 +517,8 @@ II型虚拟机
 </li>
 </ol>
 </div>
-<div id="outline-container-orgaa85497" class="outline-4">
-<h4 id="orgaa85497"><span class="section-number-4">3.3.2</span> 容器与虚拟机</h4>
+<div id="outline-container-org2b1655d" class="outline-4">
+<h4 id="org2b1655d"><span class="section-number-4">3.3.2</span> 容器与虚拟机</h4>
 <div class="outline-text-4" id="text-3-3-2">
 <p>
 容器本身是虚拟化技术中的一种,作为最轻量级的虚拟化方案出现
@@ -510,23 +534,23 @@ II型虚拟机
 </div>
 </div>
 </div>
-<div id="outline-container-orgdc75461" class="outline-3">
-<h3 id="orgdc75461"><span class="section-number-3">3.4</span> kubernetes 是什么</h3>
+<div id="outline-container-org7237282" class="outline-3">
+<h3 id="org7237282"><span class="section-number-3">3.4</span> kubernetes 是什么</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 Production-Grade Container Scheduling and Management
 这是 kubernetes github 仓库上对这个项目的描述
 </p>
 </div>
-<div id="outline-container-org2075ed9" class="outline-4">
-<h4 id="org2075ed9"><span class="section-number-4">3.4.1</span> 我们为什么需要编排</h4>
+<div id="outline-container-org0f61e6a" class="outline-4">
+<h4 id="org0f61e6a"><span class="section-number-4">3.4.1</span> 我们为什么需要编排</h4>
 <div class="outline-text-4" id="text-3-4-1">
 <p>
 我们不妨了解一下小明的故事
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="org1fb68b9"></a>小明是一个开发者<br />
+<li><a id="org9f3bbde"></a>小明是一个开发者<br />
 <div class="outline-text-6" id="text-3-4-1-0-1">
 <p>
 小明是一个开发者，这一天他想到了一个点子，他做了一个静态的网站，现在他想把网站上线。
@@ -539,7 +563,7 @@ Production-Grade Container Scheduling and Management
 </p>
 </div>
 </li>
-<li><a id="orgec85907"></a>小明的网站提供其他的服务了<br />
+<li><a id="org92166b4"></a>小明的网站提供其他的服务了<br />
 <div class="outline-text-6" id="text-3-4-1-0-2">
 <p>
 小明的网站提供其他的服务了，小明的网站现在不仅仅是一个静态页面了，现在小明需要爬取一些数据，然后展示出来，
@@ -552,7 +576,7 @@ Production-Grade Container Scheduling and Management
 </p>
 </div>
 </li>
-<li><a id="org1a49474"></a>小明的业务又扩展了<br />
+<li><a id="org0d5fab9"></a>小明的业务又扩展了<br />
 <div class="outline-text-6" id="text-3-4-1-0-3">
 <p>
 小明的业务又扩展了，小明现在需要将爬取所有的数据存下来，放便做统计与查询。
@@ -563,7 +587,7 @@ Production-Grade Container Scheduling and Management
 </p>
 </div>
 </li>
-<li><a id="org473028a"></a>小明的业务发展的特别迅速<br />
+<li><a id="orga09359d"></a>小明的业务发展的特别迅速<br />
 <div class="outline-text-6" id="text-3-4-1-0-4">
 <p>
 小明的业务发展的特别迅速，他有了几十倍的用户了，原有的三台服务器无法承受过大的压力，于是小明又多租了 17 台服务器，
@@ -575,7 +599,7 @@ Production-Grade Container Scheduling and Management
 </p>
 </div>
 </li>
-<li><a id="orgd4064c4"></a>小明的服务间歇性的被冲跨了<br />
+<li><a id="orgd2c21b0"></a>小明的服务间歇性的被冲跨了<br />
 <div class="outline-text-6" id="text-3-4-1-0-5">
 <p>
 小明的服务间歇性的被冲跨了，小明突然发现自己的服务在每天晚上凌晨左右会有几台被巨大的请求冲垮，小明现在无力负担起更多的服务器了，
@@ -588,8 +612,8 @@ Production-Grade Container Scheduling and Management
 </li>
 </ol>
 </div>
-<div id="outline-container-orgd7430fc" class="outline-4">
-<h4 id="orgd7430fc"><span class="section-number-4">3.4.2</span> kubernetes 的历史</h4>
+<div id="outline-container-org9c672cc" class="outline-4">
+<h4 id="org9c672cc"><span class="section-number-4">3.4.2</span> kubernetes 的历史</h4>
 <div class="outline-text-4" id="text-3-4-2">
 <p>
 kubernetes 由 Google 内部的编排系统 Borg 演化出来
@@ -609,16 +633,16 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </div>
 </div>
 </div>
-<div id="outline-container-orged76d7d" class="outline-3">
-<h3 id="orged76d7d"><span class="section-number-3">3.5</span> kubernetes 生态与社区</h3>
+<div id="outline-container-orgd5504c8" class="outline-3">
+<h3 id="orgd5504c8"><span class="section-number-3">3.5</span> kubernetes 生态与社区</h3>
 <div class="outline-text-3" id="text-3-5">
 </div>
-<div id="outline-container-org9da3ed1" class="outline-4">
-<h4 id="org9da3ed1"><span class="section-number-4">3.5.1</span> kubernetes 生态中的明星</h4>
+<div id="outline-container-org47aa653" class="outline-4">
+<h4 id="org47aa653"><span class="section-number-4">3.5.1</span> kubernetes 生态中的明星</h4>
 <div class="outline-text-4" id="text-3-5-1">
 </div>
 <ol class="org-ol">
-<li><a id="org82e5847"></a>网络<br />
+<li><a id="org147d807"></a>网络<br />
 <div class="outline-text-6" id="text-3-5-1-0-1">
 <ul class="org-ul">
 <li>flannel</li>
@@ -627,14 +651,14 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </ul>
 </div>
 </li>
-<li><a id="org0d85a3e"></a>存储<br />
+<li><a id="org4dfde63"></a>存储<br />
 <div class="outline-text-6" id="text-3-5-1-0-2">
 <ul class="org-ul">
 <li>etcd</li>
 </ul>
 </div>
 </li>
-<li><a id="orgbd3e7c3"></a>其他<br />
+<li><a id="orgbbbfed9"></a>其他<br />
 <div class="outline-text-6" id="text-3-5-1-0-3">
 <ul class="org-ul">
 <li>helm</li>
@@ -646,8 +670,8 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </li>
 </ol>
 </div>
-<div id="outline-container-orgd9b21ab" class="outline-4">
-<h4 id="orgd9b21ab"><span class="section-number-4">3.5.2</span> kubernetes 社区</h4>
+<div id="outline-container-org469f6f1" class="outline-4">
+<h4 id="org469f6f1"><span class="section-number-4">3.5.2</span> kubernetes 社区</h4>
 <div class="outline-text-4" id="text-3-5-2">
 <p>
 <a href="https://github.com/kubernetes/kubernetes">https://github.com/kubernetes/kubernetes</a>
@@ -741,8 +765,8 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </div>
 </div>
 </div>
-<div id="outline-container-orgb183b9e" class="outline-3">
-<h3 id="orgb183b9e"><span class="section-number-3">3.6</span> 课后作业</h3>
+<div id="outline-container-org3d7a092" class="outline-3">
+<h3 id="org3d7a092"><span class="section-number-3">3.6</span> 课后作业</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 1.安装 docker,并运行一个 nginx
@@ -762,12 +786,12 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </div>
 </div>
 </div>
-<div id="outline-container-org020c011" class="outline-2">
-<h2 id="org020c011"><span class="section-number-2">4</span> Containers 与 Pods<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-13 Fri&gt;</span></span></h2>
+<div id="outline-container-org4c3ea72" class="outline-2">
+<h2 id="org4c3ea72"><span class="section-number-2">4</span> Containers 与 Pods<span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-13 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org0a2b7fe" class="outline-3">
-<h3 id="org0a2b7fe"><span class="section-number-3">4.1</span> 课程大纲</h3>
+<div id="outline-container-org3cdaef5" class="outline-3">
+<h3 id="org3cdaef5"><span class="section-number-3">4.1</span> 课程大纲</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> 了解 CRI 以及 CRI 的意义，从而了解 k8s 的方向</li>
@@ -777,8 +801,8 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </ul>
 </div>
 </div>
-<div id="outline-container-org5a346be" class="outline-3">
-<h3 id="org5a346be"><span class="section-number-3">4.2</span> CRI</h3>
+<div id="outline-container-org022a2e6" class="outline-3">
+<h3 id="org022a2e6"><span class="section-number-3">4.2</span> CRI</h3>
 <div class="outline-text-3" id="text-4-2">
 
 <div class="figure">
@@ -786,8 +810,8 @@ kubernetes 由 Google 内部的编排系统 Borg 演化出来
 </p>
 </div>
 </div>
-<div id="outline-container-org4f1fa1f" class="outline-4">
-<h4 id="org4f1fa1f"><span class="section-number-4">4.2.1</span> CRI 的意义</h4>
+<div id="outline-container-orgb1c1588" class="outline-4">
+<h4 id="orgb1c1588"><span class="section-number-4">4.2.1</span> CRI 的意义</h4>
 <div class="outline-text-4" id="text-4-2-1">
 <p>
 kubernetes 将其可以剥离开的部分转换为接口对外开放出去
@@ -822,8 +846,8 @@ kubernetes 在此刻已经展现了自己的爪牙
 </p>
 </div>
 </div>
-<div id="outline-container-orgeb639ac" class="outline-4">
-<h4 id="orgeb639ac"><span class="section-number-4">4.2.2</span> CRI 的接口</h4>
+<div id="outline-container-org8f2bc9e" class="outline-4">
+<h4 id="org8f2bc9e"><span class="section-number-4">4.2.2</span> CRI 的接口</h4>
 <div class="outline-text-4" id="text-4-2-2">
 <p>
 CRI Proto<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>
@@ -858,12 +882,12 @@ CRI Proto<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>
 </div>
 </div>
 </div>
-<div id="outline-container-orgfea3345" class="outline-3">
-<h3 id="orgfea3345"><span class="section-number-3">4.3</span> 容器与 Pod</h3>
+<div id="outline-container-orge98b287" class="outline-3">
+<h3 id="orge98b287"><span class="section-number-3">4.3</span> 容器与 Pod</h3>
 <div class="outline-text-3" id="text-4-3">
 </div>
-<div id="outline-container-org439c0d9" class="outline-4">
-<h4 id="org439c0d9"><span class="section-number-4">4.3.1</span> Pod 是什么</h4>
+<div id="outline-container-org7a141f2" class="outline-4">
+<h4 id="org7a141f2"><span class="section-number-4">4.3.1</span> Pod 是什么</h4>
 <div class="outline-text-4" id="text-4-3-1">
 
 <div class="figure">
@@ -880,8 +904,8 @@ Pod 是 kubernetes 中部署与调度的最小单元
 </p>
 </div>
 </div>
-<div id="outline-container-org5471e04" class="outline-4">
-<h4 id="org5471e04"><span class="section-number-4">4.3.2</span> Pod 里面有什么</h4>
+<div id="outline-container-orgc308072" class="outline-4">
+<h4 id="orgc308072"><span class="section-number-4">4.3.2</span> Pod 里面有什么</h4>
 <div class="outline-text-4" id="text-4-3-2">
 
 <div class="figure">
@@ -898,8 +922,8 @@ Pod 内的容器共享网络与存储
 </p>
 </div>
 </div>
-<div id="outline-container-org8098348" class="outline-4">
-<h4 id="org8098348"><span class="section-number-4">4.3.3</span> Pod 实现原理</h4>
+<div id="outline-container-orgcb3361e" class="outline-4">
+<h4 id="orgcb3361e"><span class="section-number-4">4.3.3</span> Pod 实现原理</h4>
 <div class="outline-text-4" id="text-4-3-3">
 <p>
 pause-container 是实现 Pod 共享 namespace 的基础
@@ -951,8 +975,8 @@ shareProcessNamespace 会用在一些特定的场景
 </div>
 </div>
 
-<div id="outline-container-orgc80f190" class="outline-4">
-<h4 id="orgc80f190"><span class="section-number-4">4.3.4</span> init containers</h4>
+<div id="outline-container-orgbdfaf5f" class="outline-4">
+<h4 id="orgbdfaf5f"><span class="section-number-4">4.3.4</span> init containers</h4>
 <div class="outline-text-4" id="text-4-3-4">
 <p>
 在 Pod 中,你无法控制两个 container 的启动顺序，但是所有的 container 在启动之前都会先启动 init containers
@@ -979,8 +1003,8 @@ init containers 场景
 </p>
 </div>
 </div>
-<div id="outline-container-orgc51022a" class="outline-4">
-<h4 id="orgc51022a"><span class="section-number-4">4.3.5</span> POD 的生命周期</h4>
+<div id="outline-container-org9b184a4" class="outline-4">
+<h4 id="org9b184a4"><span class="section-number-4">4.3.5</span> POD 的生命周期</h4>
 <div class="outline-text-4" id="text-4-3-5">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -1030,8 +1054,8 @@ init containers 场景
 </div>
 </div>
 </div>
-<div id="outline-container-orga00034e" class="outline-4">
-<h4 id="orga00034e"><span class="section-number-4">4.3.6</span> Pod 的回收</h4>
+<div id="outline-container-orga6831a7" class="outline-4">
+<h4 id="orga6831a7"><span class="section-number-4">4.3.6</span> Pod 的回收</h4>
 <div class="outline-text-4" id="text-4-3-6">
 <p>
 Pod 的回收在 kubernetes 中面临这样几个问题:
@@ -1078,8 +1102,8 @@ kubelet完成最终Pod的资源清理
 </p>
 </div>
 </div>
-<div id="outline-container-orgc374f33" class="outline-4">
-<h4 id="orgc374f33"><span class="section-number-4">4.3.7</span> multi Pod 的实际场景</h4>
+<div id="outline-container-org83a7015" class="outline-4">
+<h4 id="org83a7015"><span class="section-number-4">4.3.7</span> multi Pod 的实际场景</h4>
 <div class="outline-text-4" id="text-4-3-7">
 <p>
      <img src="./images/sidecar.jpeg" alt="sidecar.jpeg" />
@@ -1097,8 +1121,8 @@ sidecar 到 service mesh
 </div>
 </div>
 </div>
-<div id="outline-container-orgec1fabe" class="outline-3">
-<h3 id="orgec1fabe"><span class="section-number-3">4.4</span> 课后作业</h3>
+<div id="outline-container-orgaaceafb" class="outline-3">
+<h3 id="orgaaceafb"><span class="section-number-3">4.4</span> 课后作业</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 1.简单论述 OCI 与 CRI 的区别
@@ -1158,13 +1182,275 @@ config:
 </div>
 </div>
 </div>
-<div id="outline-container-orgd559e4c" class="outline-2">
-<h2 id="orgd559e4c"><span class="section-number-2">5</span> 3.部署你的第一个 kubernetes 集群</h2>
+<div id="outline-container-org0d53496" class="outline-2">
+<h2 id="org0d53496"><span class="section-number-2">5</span> Yaml 与 kubectl <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-12-20 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orgd8fdee2" class="outline-4">
-<h4 id="orgd8fdee2"><span class="section-number-4">5.0.1</span> 课程大纲</h4>
-<div class="outline-text-4" id="text-5-0-1">
+<div id="outline-container-org6c1752f" class="outline-3">
+<h3 id="org6c1752f"><span class="section-number-3">5.1</span> 课程大纲</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> 了解 kubernetes yaml 的格式</li>
+<li class="off"><code>[&#xa0;]</code> kubectl 常用的命令</li>
+<li class="off"><code>[&#xa0;]</code> kubectl 的使用</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6011a80" class="outline-3">
+<h3 id="org6011a80"><span class="section-number-3">5.2</span> kubernetes yaml</h3>
+<div class="outline-text-3" id="text-5-2">
+<div class="org-src-container">
+<pre class="src src-yaml"><span style="color: #e7c547;">apiVersion</span>: v1
+<span style="color: #e7c547;">kind</span>: Pod
+<span style="color: #e7c547;">metadata</span>:
+  <span style="color: #e7c547;">annotations</span>:
+    <span style="color: #e7c547;">cni.projectcalico.org/podIP</span>: 192.168.159.56/32
+  <span style="color: #e7c547;">labels</span>:
+    <span style="color: #e7c547;">app</span>: nginx
+  <span style="color: #e7c547;">name</span>: nginx-pod-test1
+  <span style="color: #e7c547;">namespace</span>: default
+<span style="color: #e7c547;">spec</span>:
+  <span style="color: #e7c547;">containers</span>:
+  - <span style="color: #e7c547;">image</span>: nginx:1.7.9
+    <span style="color: #e7c547;">imagePullPolicy</span>: Always
+    <span style="color: #e7c547;">name</span>: nginx
+    <span style="color: #e7c547;">ports</span>:
+    - <span style="color: #e7c547;">containerPort</span>: 80
+      <span style="color: #e7c547;">protocol</span>: TCP
+    <span style="color: #e7c547;">resources</span>:
+      <span style="color: #e7c547;">requests</span>:
+        <span style="color: #e7c547;">memory</span>: <span style="color: #70c0b1;">"30Mi"</span>
+      <span style="color: #e7c547;">limits</span>:
+        <span style="color: #e7c547;">memory</span>: <span style="color: #70c0b1;">"200Mi"</span>
+  <span style="color: #e7c547;">restartPolicy</span>: Always
+  <span style="color: #e7c547;">schedulerName</span>: default-scheduler
+  <span style="color: #e7c547;">terminationGracePeriodSeconds</span>: 30
+  <span style="color: #e7c547;">tolerations</span>:
+  - <span style="color: #e7c547;">effect</span>: NoExecute
+    <span style="color: #e7c547;">key</span>: node.kubernetes.io/not-ready
+    <span style="color: #e7c547;">operator</span>: Exists
+    <span style="color: #e7c547;">tolerationSeconds</span>: 300
+  - <span style="color: #e7c547;">effect</span>: NoExecute
+    <span style="color: #e7c547;">key</span>: node.kubernetes.io/unreachable
+    <span style="color: #e7c547;">operator</span>: Exists
+    <span style="color: #e7c547;">tolerationSeconds</span>: 300
+</pre>
+</div>
+</div>
+<div id="outline-container-org0c1dcf5" class="outline-4">
+<h4 id="org0c1dcf5"><span class="section-number-4">5.2.1</span> annotation</h4>
+<div class="outline-text-4" id="text-5-2-1">
+<p>
+注释以 kv 的方式存储
+</p>
+
+<p>
+有最大长度限制
+</p>
+</div>
+</div>
+<div id="outline-container-org551177b" class="outline-4">
+<h4 id="org551177b"><span class="section-number-4">5.2.2</span> label &amp;&amp; selector</h4>
+<div class="outline-text-4" id="text-5-2-2">
+<p>
+用来调度与标明身份
+</p>
+
+<p>
+是 kubernetes 判断身份的基础
+</p>
+</div>
+</div>
+<div id="outline-container-org438af54" class="outline-4">
+<h4 id="org438af54"><span class="section-number-4">5.2.3</span> namespace</h4>
+<div class="outline-text-4" id="text-5-2-3">
+<pre class="example">
+kubectl get ns
+</pre>
+<p>
+1.default
+</p>
+
+<p>
+2.kube-system kubernetes 系统的
+</p>
+
+<p>
+3.kube-public 用来对集群所有用户可读的
+</p>
+</div>
+</div>
+<div id="outline-container-orgd4e5a65" class="outline-4">
+<h4 id="orgd4e5a65"><span class="section-number-4">5.2.4</span> apiVersion</h4>
+<div class="outline-text-4" id="text-5-2-4">
+<p>
+kubernetes 采用了标准的 REST API, 外部的用户命令与组件之间的通信，经过 apiserver 的部分都会使用 RESTAPI
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="org947e9ea"></a>RESTful API<br />
+<div class="outline-text-5" id="text-5-2-4-1">
+<ul class="org-ul">
+<li>一切皆是资源</li>
+<li>url 中指定了版本</li>
+<li>头部表示 schema</li>
+<li>使用 HTTP 的 Method 的与返回码</li>
+</ul>
+</div>
+</li>
+
+<li><a id="org297eefe"></a>API 版本信息<br />
+<div class="outline-text-5" id="text-5-2-4-2">
+<p>
+1.alpha 所有包含 alpha 的; feature 可能被修改或删除，可能有 bug，默认禁用
+</p>
+
+<p>
+2.beta 所有包含 beta 的; 经过测试,默认启用,可能会修改细节但是不会删除
+</p>
+
+<p>
+3.stable 的版本 v(x)
+</p>
+</div>
+</li>
+
+<li><a id="org4bec316"></a>API 组<br />
+<div class="outline-text-5" id="text-5-2-4-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">/api/v1</td>
+<td class="org-left">/api/v1</td>
+<td class="org-left">apiVersion: v1</td>
+</tr>
+
+<tr>
+<td class="org-left">apis/$GROUP_NAME/$VERSION</td>
+<td class="org-left">$GROUP_NAME/$VERSION</td>
+<td class="org-left">apiVersion: batch/v1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org1e210a5" class="outline-4">
+<h4 id="org1e210a5"><span class="section-number-4">5.2.5</span> toleration &amp;&amp; taint</h4>
+<div class="outline-text-4" id="text-5-2-5">
+<pre class="example">
+kubectl taint nodes node1 key=value:NoSchedule
+</pre>
+<p>
+给节点 node1 打了一个污点 key value effact
+所有的 pod 都不会被调度到这台机器上，除非存在相应的容忍
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6d63a59" class="outline-3">
+<h3 id="org6d63a59"><span class="section-number-3">5.3</span> kubectl</h3>
+<div class="outline-text-3" id="text-5-3">
+</div>
+<div id="outline-container-orgee777da" class="outline-4">
+<h4 id="orgee777da"><span class="section-number-4">5.3.1</span> kubectl get</h4>
+<div class="outline-text-4" id="text-5-3-1">
+<div class="org-src-container">
+<pre class="src src-shell">kubectl get po -o wide
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org88dab12" class="outline-4">
+<h4 id="org88dab12"><span class="section-number-4">5.3.2</span> kubectl apply</h4>
+<div class="outline-text-4" id="text-5-3-2">
+<p>
+kubectl apply -f
+</p>
+</div>
+</div>
+<div id="outline-container-org79f2683" class="outline-4">
+<h4 id="org79f2683"><span class="section-number-4">5.3.3</span> kubectl logs</h4>
+<div class="outline-text-4" id="text-5-3-3">
+<pre class="example">
+kubectl logs -f
+</pre>
+</div>
+</div>
+<div id="outline-container-org6730f0d" class="outline-4">
+<h4 id="org6730f0d"><span class="section-number-4">5.3.4</span> kubectl exec</h4>
+<div class="outline-text-4" id="text-5-3-4">
+<pre class="example">
+kubectl exec -it -p -c
+</pre>
+</div>
+</div>
+<div id="outline-container-org9093fe3" class="outline-4">
+<h4 id="org9093fe3"><span class="section-number-4">5.3.5</span> kubectl edit</h4>
+<div class="outline-text-4" id="text-5-3-5">
+<pre class="example">
+kubectl edit
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgabe0cef" class="outline-3">
+<h3 id="orgabe0cef"><span class="section-number-3">5.4</span> 作业</h3>
+<div class="outline-text-3" id="text-5-4">
+<div class="org-src-container">
+<pre class="src src-yaml"><span style="color: #e7c547;">apiVersion</span>: v1
+<span style="color: #e7c547;">kind</span>: Pod
+<span style="color: #e7c547;">metadata</span>:
+  <span style="color: #e7c547;">name</span>: memory-demo-2
+  <span style="color: #e7c547;">namespace</span>: mem-example
+<span style="color: #e7c547;">spec</span>:
+  <span style="color: #e7c547;">containers</span>:
+  - <span style="color: #e7c547;">name</span>: memory-demo-2-ctr
+    <span style="color: #e7c547;">image</span>: polinux/stress
+    <span style="color: #e7c547;">resources</span>:
+      <span style="color: #e7c547;">requests</span>:
+        <span style="color: #e7c547;">memory</span>: <span style="color: #70c0b1;">"50Mi"</span>
+      <span style="color: #e7c547;">limits</span>:
+        <span style="color: #e7c547;">memory</span>: <span style="color: #70c0b1;">"100Mi"</span>
+    <span style="color: #e7c547;">command</span>: [<span style="color: #70c0b1;">"stress"</span>]
+    <span style="color: #e7c547;">args</span>: [<span style="color: #70c0b1;">"--vm"</span>, <span style="color: #70c0b1;">"1"</span>, <span style="color: #70c0b1;">"--vm-bytes"</span>, <span style="color: #70c0b1;">"250M"</span>, <span style="color: #70c0b1;">"--vm-hang"</span>, <span style="color: #70c0b1;">"1"</span>]
+</pre>
+</div>
+<p>
+1.描述启动该 yaml 时出现了什么情况(报错与 pod 状态)，并解释为什么
+</p>
+
+<p>
+2.修改这个 yaml 使得该 pod 可以运行
+</p>
+
+<p>
+<a href="https://www.katacoda.com/courses/kubernetes/playground">https://www.katacoda.com/courses/kubernetes/playground</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5e579f4" class="outline-2">
+<h2 id="org5e579f4"><span class="section-number-2">6</span> 部署你的第一个 kubernetes 集群</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-org7594032" class="outline-4">
+<h4 id="org7594032"><span class="section-number-4">6.0.1</span> 课程大纲</h4>
+<div class="outline-text-4" id="text-6-0-1">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> 部署一个三个节点的 kubernetes 集群</li>
 <li class="off"><code>[&#xa0;]</code> 在 kubernetes 集群上部署一个经典的微服务程序</li>
@@ -1174,56 +1460,56 @@ config:
 </ul>
 </div>
 </div>
-<div id="outline-container-orge3e9c3a" class="outline-4">
-<h4 id="orge3e9c3a"><span class="section-number-4">5.0.2</span> Links</h4>
-<div class="outline-text-4" id="text-5-0-2">
+<div id="outline-container-org4f98f12" class="outline-4">
+<h4 id="org4f98f12"><span class="section-number-4">6.0.2</span> Links</h4>
+<div class="outline-text-4" id="text-6-0-2">
 <p>
 <a href="https://www.katacoda.com/courses/kubernetes/playground">https://www.katacoda.com/courses/kubernetes/playground</a>
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgfe42a49" class="outline-2">
-<h2 id="orgfe42a49"><span class="section-number-2">6</span> 4.Pod controllers</h2>
+<div id="outline-container-org3ac4246" class="outline-2">
+<h2 id="org3ac4246"><span class="section-number-2">7</span> Pod controllers</h2>
 </div>
-<div id="outline-container-org09d652d" class="outline-2">
-<h2 id="org09d652d"><span class="section-number-2">7</span> Service Loadbalanceing and Networking</h2>
+<div id="outline-container-org9660c42" class="outline-2">
+<h2 id="org9660c42"><span class="section-number-2">8</span> Service Loadbalanceing and Networking</h2>
 </div>
-<div id="outline-container-org0c3e2f4" class="outline-2">
-<h2 id="org0c3e2f4"><span class="section-number-2">8</span> Storage</h2>
+<div id="outline-container-org319ca01" class="outline-2">
+<h2 id="org319ca01"><span class="section-number-2">9</span> Storage</h2>
 </div>
-<div id="outline-container-org56eab04" class="outline-2">
-<h2 id="org56eab04"><span class="section-number-2">9</span> Security</h2>
+<div id="outline-container-org6fb244f" class="outline-2">
+<h2 id="org6fb244f"><span class="section-number-2">10</span> Security</h2>
 </div>
-<div id="outline-container-orge00a9bb" class="outline-2">
-<h2 id="orge00a9bb"><span class="section-number-2">10</span> 初识 kubernetes 组件</h2>
-<div class="outline-text-2" id="text-10">
+<div id="outline-container-orga3e75ea" class="outline-2">
+<h2 id="orga3e75ea"><span class="section-number-2">11</span> 初识 kubernetes 组件</h2>
+<div class="outline-text-2" id="text-11">
 </div>
-<div id="outline-container-org11303e1" class="outline-4">
-<h4 id="org11303e1"><span class="section-number-4">10.0.1</span> 课程大纲</h4>
-<div class="outline-text-4" id="text-10-0-1">
+<div id="outline-container-org579f808" class="outline-4">
+<h4 id="org579f808"><span class="section-number-4">11.0.1</span> 课程大纲</h4>
+<div class="outline-text-4" id="text-11-0-1">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> 了解 kubernetes 有哪些组件</li>
 <li class="off"><code>[&#xa0;]</code> 简介 kubernetes 内的对象与资源</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org7a954f5" class="outline-4">
-<h4 id="org7a954f5"><span class="section-number-4">10.0.2</span> kubernetes 的组件</h4>
-<div class="outline-text-4" id="text-10-0-2">
+<div id="outline-container-org629b393" class="outline-4">
+<h4 id="org629b393"><span class="section-number-4">11.0.2</span> kubernetes 的组件</h4>
+<div class="outline-text-4" id="text-11-0-2">
 </div>
 <ol class="org-ol">
-<li><a id="org009d64d"></a>kubelet<br /></li>
-<li><a id="org71f3e69"></a>api-server<br /></li>
-<li><a id="org00be344"></a>kube-controller<br /></li>
-<li><a id="org195557a"></a>scheduler<br /></li>
-<li><a id="org6880d71"></a>kube-proxy<br /></li>
-<li><a id="org37dbf44"></a>etcd<br /></li>
-<li><a id="orgc15aea1"></a>core-dns<br /></li>
+<li><a id="org3f80fef"></a>kubelet<br /></li>
+<li><a id="org37557b5"></a>api-server<br /></li>
+<li><a id="orgd662e7b"></a>kube-controller<br /></li>
+<li><a id="org8b8553f"></a>scheduler<br /></li>
+<li><a id="org4e7b744"></a>kube-proxy<br /></li>
+<li><a id="org5892dcd"></a>etcd<br /></li>
+<li><a id="org0c237d5"></a>core-dns<br /></li>
 </ol>
 </div>
-<div id="outline-container-org925a4f2" class="outline-4">
-<h4 id="org925a4f2"><span class="section-number-4">10.0.3</span> Links</h4>
+<div id="outline-container-org2ac305a" class="outline-4">
+<h4 id="org2ac305a"><span class="section-number-4">11.0.3</span> Links</h4>
 </div>
 </div>
 <div id="footnotes">
@@ -1259,7 +1545,7 @@ config:
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: Byron Wang</p>
-<p class="date">Created: 2019-12-13 Fri 18:28</p>
+<p class="date">Created: 2019-12-20 Fri 15:05</p>
 <p class="validation"></p>
 </div>
 </body>

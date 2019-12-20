@@ -344,7 +344,7 @@ EOF
 ** 课程大纲
 - [ ] 了解 kubernetes yaml 的格式
 - [ ] kubectl 常用的命令
-- [ ] kubectl 的使用
+- [ ] kubectl 的使用g
 ** kubernetes yaml
 #+BEGIN_SRC yaml
 apiVersion: v1
@@ -395,7 +395,9 @@ spec:
 kubectl get ns
 #+END_SRC
 1.default
+
 2.kube-system kubernetes 系统的
+
 3.kube-public 用来对集群所有用户可读的
 *** apiVersion
 kubernetes 采用了标准的 REST API, 外部的用户命令与组件之间的通信，经过 apiserver 的部分都会使用 RESTAPI
@@ -406,15 +408,26 @@ kubernetes 采用了标准的 REST API, 外部的用户命令与组件之间的�
 - 头部表示 schema
 - 使用 HTTP 的 Method 的与返回码
 
-版本信息包括三种
+**** API 版本信息
+
 1.alpha 所有包含 alpha 的; feature 可能被修改或删除，可能有 bug，默认禁用
+
 2.beta 所有包含 beta 的; 经过测试,默认启用,可能会修改细节但是不会删除
+
 3.stable 的版本 v(x)
 
-API 组
-/api/v1                    /api/v1               apiVersion: v1
-apis/$GROUP_NAME/$VERSION  $GROUP_NAME/$VERSION  apiVersion: batch/v1
-*** toleration
+**** API 组
+
+| /api/v1                   | /api/v1              | apiVersion: v1       |
+| apis/$GROUP_NAME/$VERSION | $GROUP_NAME/$VERSION | apiVersion: batch/v1 |
+
+*** toleration && taint
+#+BEGIN_SRC
+kubectl taint nodes node1 key=value:NoSchedule
+#+END_SRC
+给节点 node1 打了一个污点 key value effact
+所有的 pod 都不会被调度到这台机器上，除非存在相应的容忍
+
 ** kubectl
 *** kubectl get
 #+BEGIN_SRC shell
@@ -454,6 +467,7 @@ spec:
     args: ["--vm", "1", "--vm-bytes", "250M", "--vm-hang", "1"]
 #+END_SRC
 1.描述启动该 yaml 时出现了什么情况(报错与 pod 状态)，并解释为什么
+
 2.修改这个 yaml 使得该 pod 可以运行
 
 https://www.katacoda.com/courses/kubernetes/playground
