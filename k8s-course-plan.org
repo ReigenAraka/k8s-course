@@ -340,7 +340,125 @@ EOF
 
 4.当访问本地的 30001 端口时可以出现 2048 游戏界面
 [fn:2-1] https://github.com/kubernetes/kubernetes/blob/242a97307b34076d5d8f5bbeb154fa4d97c9ef1d/pkg/kubelet/api/v1alpha1/runtime/api.proto
-* 3.部署你的第一个 kubernetes 集群
+* Yaml 与 kubectl <2019-12-20 Fri>
+** 课程大纲
+- [ ] 了解 kubernetes yaml 的格式
+- [ ] kubectl 常用的命令
+- [ ] kubectl 的使用
+** kubernetes yaml
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cni.projectcalico.org/podIP: 192.168.159.56/32
+  labels:
+    app: nginx
+  name: nginx-pod-test1
+  namespace: default
+spec:
+  containers:
+  - image: nginx:1.7.9
+    imagePullPolicy: Always
+    name: nginx
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    resources:
+      requests:
+        memory: "30Mi"
+      limits:
+        memory: "200Mi"
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+#+END_SRC
+*** annotation
+注释以 kv 的方式存储
+
+有最大长度限制
+*** label && selector
+用来调度与标明身份
+
+是 kubernetes 判断身份的基础
+*** namespace
+#+BEGIN_SRC
+kubectl get ns
+#+END_SRC
+1.default
+2.kube-system kubernetes 系统的
+3.kube-public 用来对集群所有用户可读的
+*** apiVersion
+kubernetes 采用了标准的 REST API, 外部的用户命令与组件之间的通信，经过 apiserver 的部分都会使用 RESTAPI
+
+**** RESTful API
+- 一切皆是资源
+- url 中指定了版本
+- 头部表示 schema
+- 使用 HTTP 的 Method 的与返回码
+
+版本信息包括三种
+1.alpha 所有包含 alpha 的; feature 可能被修改或删除，可能有 bug，默认禁用
+2.beta 所有包含 beta 的; 经过测试,默认启用,可能会修改细节但是不会删除
+3.stable 的版本 v(x)
+
+API 组
+/api/v1                    /api/v1               apiVersion: v1
+apis/$GROUP_NAME/$VERSION  $GROUP_NAME/$VERSION  apiVersion: batch/v1
+*** toleration
+** kubectl
+*** kubectl get
+#+BEGIN_SRC shell
+kubectl get po -o wide
+#+END_SRC
+*** kubectl apply
+kubectl apply -f
+*** kubectl logs
+#+BEGIN_SRC
+kubectl logs -f
+#+END_SRC
+*** kubectl exec
+#+BEGIN_SRC
+kubectl exec -it -p -c
+#+END_SRC
+*** kubectl edit
+#+BEGIN_SRC
+kubectl edit
+#+END_SRC
+** 作业
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: memory-demo-2
+  namespace: mem-example
+spec:
+  containers:
+  - name: memory-demo-2-ctr
+    image: polinux/stress
+    resources:
+      requests:
+        memory: "50Mi"
+      limits:
+        memory: "100Mi"
+    command: ["stress"]
+    args: ["--vm", "1", "--vm-bytes", "250M", "--vm-hang", "1"]
+#+END_SRC
+1.描述启动该 yaml 时出现了什么情况(报错与 pod 状态)，并解释为什么
+2.修改这个 yaml 使得该 pod 可以运行
+
+https://www.katacoda.com/courses/kubernetes/playground
+
+* 部署你的第一个 kubernetes 集群
 *** 课程大纲
 - [ ] 部署一个三个节点的 kubernetes 集群
 - [ ] 在 kubernetes 集群上部署一个经典的微服务程序
@@ -349,7 +467,7 @@ EOF
 - [ ] 通过使用 kubectl 修改 yaml 完成对 deploy 的修改
 *** Links
     https://www.katacoda.com/courses/kubernetes/playground
-* 4.Pod controllers
+* Pod controllers
 * Service Loadbalanceing and Networking
 * Storage
 * Security
