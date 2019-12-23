@@ -431,21 +431,21 @@ kubectl taint nodes node1 key=value:NoSchedule
 ** kubectl
 *** kubectl get
 #+BEGIN_SRC shell
-kubectl get po -o wide
+kubectl get po $podname -o wide
 #+END_SRC
 *** kubectl apply
-kubectl apply -f
+kubectl apply -f *******.yaml
 *** kubectl logs
-#+BEGIN_SRC
-kubectl logs -f
+#+BEGIN_SRC shell
+kubectl logs -f $podname [-c]
 #+END_SRC
 *** kubectl exec
-#+BEGIN_SRC
-kubectl exec -it -p -c
+#+BEGIN_SRC shell
+kubectl exec -it [-p] $podname [-c]
 #+END_SRC
 *** kubectl edit
-#+BEGIN_SRC
-kubectl edit
+#+BEGIN_SRC shell
+kubectl edit $resource $name
 #+END_SRC
 ** 作业
 #+BEGIN_SRC yaml
@@ -474,13 +474,8 @@ https://www.katacoda.com/courses/kubernetes/playground
 
 * 部署你的第一个 kubernetes 集群
 *** 课程大纲
-- [ ] 部署一个三个节点的 kubernetes 集群
+- [ ] 部署一个两节点的 kubernetes 集群
 - [ ] 在 kubernetes 集群上部署一个经典的微服务程序
-- [ ] 了解 kubernetes 的 yaml 格式与写法
-- [ ] 了解 kubectl 的命令
-- [ ] 通过使用 kubectl 修改 yaml 完成对 deploy 的修改
-*** Links
-    https://www.katacoda.com/courses/kubernetes/playground
 * Pod controllers
 * Service Loadbalanceing and Networking
 * Storage
