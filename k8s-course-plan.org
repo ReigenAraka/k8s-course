@@ -471,11 +471,6 @@ spec:
 2.修改这个 yaml 使得该 pod 可以运行
 
 https://www.katacoda.com/courses/kubernetes/playground
-
-* 部署你的第一个 kubernetes 集群
-*** 课程大纲
-- [ ] 部署一个两节点的 kubernetes 集群
-- [ ] 在 kubernetes 集群上部署一个经典的微服务程序
 * Pod controllers
 * Service Loadbalanceing and Networking
 * Storage
@@ -493,3 +488,68 @@ https://www.katacoda.com/courses/kubernetes/playground
 **** etcd
 **** core-dns
 *** Links
+* 最佳实践
+** 如何最快的准备一个单节点 k8s 集群
+*** 前言
+对于一个初学者来说将时间浪费在安装部署 k8s 集群上是一件十分不明智的事情
+
+目前很方便安装 k8s 的方式有以下几种:
+
+1.kubeadm
+
+可以使用 kubeadm 直接进行安装，主要存在的问题是镜像，k8s 的镜像存在 gcr.io 的仓库
+
+而我们伟大的防火长城阻止了国内用户以常规的方式进行访问
+
+如果有人想尝试可以使用 https://github.com/ReigenAraka/tools.git 啦取镜像
+
+2.vagrant + ansible
+vagrant 是 hashcorp 出的一个通过配置文件启动虚拟机的一个工具
+
+ansible 是一个在个虚拟机上同时进行操作的工具
+
+这种方式安装 k8s 集群比较适合经验丰富的人，因为除了 k8s 的配置之外还要维护 vagrant 与 ansible 的配置文件
+3.minikube
+minikube 是一个运行单节点 k8s 集群的一种方式，简单轻量，唯一的缺点就是要使用虚拟机
+
+如果使用想安装可以参考下面的文档
+
+https://kubernetes.io/docs/tasks/tools/install-minikube/
+
+4.microk8s
+microk8s 是 ubuntu 出的一个以 service 代替传统的 docker container 启动 k8s 组件的一种方式
+
+是目前我使用过最简单与轻量的安装方式
+
+*** 使用 microk8s 进行安装
+- [ ] 使用最新的版本
+#+BEGIN_SRC shell
+sudo snap install microk8s --classic
+#+END_SRC
+- [ ] 使用指定的版本
+#+BEGIN_SRC shell
+snap info microk8s
+sudo snap install microk8s --classic --channel=1.17/stable
+#+END_SRC
+
+
+**** 简单的使用指南
+1.查看 microk8s 的状态
+#+BEGIN_SRC
+microk8s.status
+#+END_SRC
+
+2.启用一个新的功能
+#+BEGIN_SRC
+microk8s.enable ***
+#+END_SRC
+
+3.start/stop
+#+BEGIN_SRC
+microk8s.start/microk8s.stop
+#+END_SRC
+
+4.kubectl
+#+BEGIN_SRC
+microk8s.kubectl
+#+END_SRC
