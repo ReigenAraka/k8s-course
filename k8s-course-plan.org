@@ -742,7 +742,7 @@ selector 的标签用来标识最终会控制哪个 pod
      名称为 nginx-c4
      有两个副本
 
-   2.更改 1 中创建的 deploy 的副本数为 4
+   2.更改 1 中创建的 deploy 的副本数为 4,并将镜像改为 daocloud.io/daocloud/dao-2048
 
    3.回滚至两个副本的版本
 
