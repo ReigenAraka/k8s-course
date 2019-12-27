@@ -471,11 +471,298 @@ spec:
 2.修改这个 yaml 使得该 pod 可以运行
 
 https://www.katacoda.com/courses/kubernetes/playground
-* Pod controllers
-* Service Loadbalanceing and Networking
-* Storage
-* Security
-* 初识 kubernetes 组件
+* Pod controllers <2019-12-27 Fri>
+** 课程大纲
+- [ ] 了解 pod 在 k8s 中如何被控制
+- [ ] 了解 k8s 常用的 poc controller 以及作用
+** Replicaset (rs)
+rs 是用来保证 pod 运行数量的
+
+rs 提供了基础的管理 pod 的能力，保证符合预期数量的 pod 正常启动
+
+现在的 rs 都是伴随着 deploy 进行使用,不建议手动进行更改
+#+BEGIN_SRC shell
+kubect get rs ××× -o yaml
+#+END_SRC
+
+#+BEGIN_SRC yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  annotations:
+    deployment.kubernetes.io/desired-replicas: "5"
+    deployment.kubernetes.io/max-replicas: "7"
+    deployment.kubernetes.io/revision: "5"
+    deployment.kubernetes.io/revision-history: "3"
+  creationTimestamp: "2019-12-26T11:02:23Z"
+  generation: 7
+  labels:
+    app: nginx
+    pod-template-hash: 765bd9f9c
+    test: "123"
+  name: nginx-deployment-765bd9f9c
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Deployment
+    name: nginx-deployment
+    uid: 2f0afdde-f57e-42df-9f57-781fd5cb2391
+  resourceVersion: "4850637"
+  selfLink: /apis/apps/v1/namespaces/default/replicasets/nginx-deployment-765bd9f9c
+  uid: fdbce8f5-0e5a-418f-8ffb-68e33901da1c
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: nginx
+      pod-template-hash: 765bd9f9c
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+        pod-template-hash: 765bd9f9c
+        test: "123"
+    spec:
+      containers:
+      - image: nginx:1.7.9
+        imagePullPolicy: Always
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 5
+  fullyLabeledReplicas: 5
+  observedGeneration: 7
+  readyReplicas: 5
+  replicas: 5
+#+END_SRC
+** ReplicationController (rc)
+rc 是时代的眼泪 早期用来对 pod 的控制使用 rc 完成，但现在有了更高级的 deploy
+** Deployments (deploy)
+deploy 是 k8s 中很重要的一个概念，可以看作无状态应用的管理器
+
+deploy 提供了对 rs 与 pod 的声明式的更新
+
+先来看这个样一个 yaml
+#+BEGIN_SRC yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+          - containerPort: 80
+#+END_SRC
+
+这里创建了一个 名为 nginx-deployment 的 deploy
+
+这时你可以找到这个 deploy 对应的 rs 与 pod
+
+#+BEGIN_SRC yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  annotations:
+    deployment.kubernetes.io/desired-replicas: "1"
+    deployment.kubernetes.io/max-replicas: "2"
+    deployment.kubernetes.io/revision: "2"
+  creationTimestamp: "2019-11-05T01:34:29Z"
+  generation: 10
+  labels:
+    app: nginx
+    pod-template-hash: 5b7b9ccb95
+  name: nginx-deployment-5b7b9ccb95
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Deployment
+    name: nginx-deployment
+    uid: 2f0afdde-f57e-42df-9f57-781fd5cb2391
+  resourceVersion: "3898865"
+  selfLink: /apis/apps/v1/namespaces/default/replicasets/nginx-deployment-5b7b9ccb95
+  uid: c87ebc79-38d3-4ce2-b581-c63851d7adef
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+      pod-template-hash: 5b7b9ccb95
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+        pod-template-hash: 5b7b9ccb95
+    spec:
+      containers:
+      - image: nginx:1.7.9
+        imagePullPolicy: Always
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  fullyLabeledReplicas: 1
+  observedGeneration: 10
+  readyReplicas: 1
+  replicas: 1
+#+END_SRC
+
+rs 中有一个很重要的字段叫做 ownerReferences 标识这个 rs 是属于哪一个 deploy 的
+
+同样你可以在 pod 中也找到相应的字段,来标识这个 pod 是受到哪个 rs 管理的
+
+selector 的标签用来标识最终会控制哪个 pod
+
+我们会发现在 rs 中，除了我们设置的标签外还有一个新的标签 pod-template-hash
+
+这个标签用来保证一个 deploy 所对应的 rs 不会发生重叠
+*** 更新一个 deploy
+    当更改了 deploy 中的资源时，deploy 就会进行更新,deploy 的更新同时会更新所属的 rs 与 pod
+*** 滚动发布
+    #+BEGIN_SRC shell
+    kubectl rollout
+    #+END_SRC
+    回滚可以针对 deploy daemonset statefulset
+
+    当更改一个资源时可以使用 --record 对当前的这条命令进行记录
+    #+BEGIN_SRC
+    kubectl appf -f ***.yaml --record
+    #+END_SRC
+    使用 history 可以看到一个 deploy 的变化记录
+
+    #+BEGIN_SRC
+    kubectl rollout history deploy nginx-deployment
+    #+END_SRC
+
+    然后使用 undo 进行回滚, 使用 --to-revision 可以选择回滚到的版本
+    #+BEGIN_SRC
+    kubectl rollout undo  deploy  nginx-deployment
+    #+END_SRC
+*** 扩展
+    使用 scale 可以 deploy 的副本数进行更改
+    #+BEGIN_SRC
+    kubectl scale deploy nginx-deployment
+    #+END_SRC
+    同样也是对 rs 的更改
+*** 自动扩展
+    HPA 的机制较为复杂会在后面的章节详细讲解
+** Jobs
+  job 主要用来执行一次性的任务
+
+  在 k8s 中 job 有几种不同的类型使用 spec.parallelism 和 spec.completions 进行配置
+
+  completions 标识几个 pod 运行结束后 job 进入到完成状态
+
+  parallelism 标识同时有几个 pod 一起运行
+
+*** 不同的 job
+1.非并行的 job
+
+2.固定结束次数的 job
+
+3.带有工作队列的并行 job
+
+
+| Job类型               | 使用示例                | 行为                                         | completions | Parallelism |
+|-----------------------+-------------------------+----------------------------------------------+-------------+-------------|
+| 一次性Job             | 数据库迁移              | 创建一个Pod直至其成功结束                    |           1 |           1 |
+| 固定结束次数的Job     | 处理工作队列的Pod       | 依次创建一个Pod运行直至completions个成功结束 |          2+ |           1 |
+| 固定结束次数的并行Job | 多个Pod同时处理工作队列 | 依次创建多个Pod运行直至completions个成功结束 |          2+ |          2+ |
+| 并行Job               | 多个Pod同时处理工作队列 | 创建一个或多个Pod直至有一个成功结束          |           1 |          2+ |
+
+** CronJob
+   cronjob 以类似 crontab 的方式进行调度 job
+
+*** 什么是 crontab
+
+   https://linux.die.net/man/1/crontab
+
+   推荐一个网站 https://crontab.guru/ 方便更好的理解 crontab
+** DaemonSet (ds)
+   daemonset 确保集群内的每一台机器上都运行 ds 下的 pod
+
+   使用场景：
+
+   1.有一些集群存储的 daemon 例如:glusterd, ceph
+
+   2.每台机器上都需要有的日志收集与监控  logstash datadog
+
+   3.网络方案中需要部署在每台机器上的实例 calico
+*** 如果 ds 遇到 taint 如何处理？
+
+   k8s 会自动添加 tolearation 到 ds 的 pod 上
+
+| toleration key                         | effect     | version | description                                                                                          |
+|----------------------------------------+------------+---------+------------------------------------------------------------------------------------------------------|
+| node.kubernetes.io/not-ready           | NoExecute  |   1.13+ | DaemonSet pods will not be evicted when there are node problems such as a network partition.         |
+| node.kubernetes.io/unreachable         | NoExecute  |   1.13+ | DaemonSet pods will not be evicted when there are node problems such as a network partition.         |
+| node.kubernetes.io/disk-pressure       | NoSchedule |    1.8+ |                                                                                                      |
+| node.kubernetes.io/memory-pressure     | NoSchedule |    1.8+ |                                                                                                      |
+| node.kubernetes.io/unschedulable       | NoSchedule |   1.12+ | DaemonSet pods tolerate unschedulable attributes by default scheduler.                               |
+| node.kubernetes.io/network-unavailable | NoSchedule |   1.12+ | DaemonSet pods, who uses host network, tolerate network-unavailable attributes by default scheduler. |
+
+** 课后作业
+   1.创建一个 nginx 的 deploy
+     名称为 nginx-c4
+     有两个副本
+
+   2.更改 1 中创建的 deploy 的副本数为 4
+
+   3.回滚至两个副本的版本
+
+   4.观察在回滚的过程中 deploy annotation 的变化
+* 有状态、无状态与 Cloud native <2020-01-03 Fri>
+** 课程大纲
+- [ ] 了解 statefulset
+- [ ] 能够区分有状态应用与无状态应用
+- [ ] 了解 cloud native 的基本概念
+** 无中生有
+*** 什么是幂等性
+*** 无状态应用
+*** 有状态应用
+** statefulset
+** cloud native
+* WIP
+** Service Loadbalanceing and Networking
+** Storage
+** Security
+** 初识 kubernetes 组件
 *** 课程大纲
 - [ ] 了解 kubernetes 有哪些组件
 - [ ] 简介 kubernetes 内的对象与资源
@@ -501,15 +788,18 @@ https://www.katacoda.com/courses/kubernetes/playground
 
 而我们伟大的防火长城阻止了国内用户以常规的方式进行访问
 
-如果有人想尝试可以使用 https://github.com/ReigenAraka/tools.git 啦取镜像
+如果有人想尝试可以使用 https://github.com/ReigenAraka/tools.git 拉取镜像
 
 2.vagrant + ansible
+
 vagrant 是 hashcorp 出的一个通过配置文件启动虚拟机的一个工具
 
 ansible 是一个在个虚拟机上同时进行操作的工具
 
 这种方式安装 k8s 集群比较适合经验丰富的人，因为除了 k8s 的配置之外还要维护 vagrant 与 ansible 的配置文件
+
 3.minikube
+
 minikube 是一个运行单节点 k8s 集群的一种方式，简单轻量，唯一的缺点就是要使用虚拟机
 
 如果使用想安装可以参考下面的文档
@@ -517,6 +807,7 @@ minikube 是一个运行单节点 k8s 集群的一种方式，简单轻量，唯
 https://kubernetes.io/docs/tasks/tools/install-minikube/
 
 4.microk8s
+
 microk8s 是 ubuntu 出的一个以 service 代替传统的 docker container 启动 k8s 组件的一种方式
 
 是目前我使用过最简单与轻量的安装方式
