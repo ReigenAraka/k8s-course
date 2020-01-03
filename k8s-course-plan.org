@@ -948,7 +948,7 @@ for i in 0 1; do kubectl exec web-$i -- sh -c 'hostname'; done
 #+END_SRC
 3.启动一个新的 deploy 在新启动的 pod 内部查看 dns 记录并对比相应的 sts pod 的信息
    #+BEGIN_SRC
-   nslookup web-01.nginx
+   nslookup web-1.nginx
    #+END_SRC
 4.将副本数改为 0, pod 在销毁时是否有顺序?
 * WIP
