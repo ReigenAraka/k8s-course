@@ -749,15 +749,208 @@ selector 的标签用来标识最终会控制哪个 pod
    4.观察在回滚的过程中 deploy annotation 的变化
 * 有状态、无状态与 Cloud native <2020-01-03 Fri>
 ** 课程大纲
-- [ ] 了解 statefulset
-- [ ] 能够区分有状态应用与无状态应用
-- [ ] 了解 cloud native 的基本概念
+- [ ] 可以分辨有状态的服务与无状态的服务
+- [ ] 了解 StatefulSet 的意义并可以在 k8s 集群中进行管理
+- [ ] 对 Cloud-native 的意义有一个基本的认识
 ** 无中生有
 *** 什么是幂等性
-*** 无状态应用
-*** 有状态应用
-** statefulset
-** cloud native
+    本章所讲的幂等性仅指 RESTful API 的 HTTP
+
+    HTTP 中的幂等性指的是一次请求与多次请求同一个资源会产生相同的副作用
+
+    简单来讲，对一个 API 进行多次操作，是不是每次对系统的影响都是都是相同的
+
+
+| 方法   | 幂等 | 举例                         |
+|--------+------+------------------------------|
+| GET    | 是   | 获取编号为 123 的资源        |
+| DELETE | 是   | 删除编号为 123 的资源        |
+| POST   | 否   | 在目录 /texts 下创建一个资源 |
+| PUT    | 是   | 更改或创建 /textx/123 的详情 |
+*** 无状态服务与有状态服务
+**** 小明是一个 web 开发者
+小明的朋友写了一个购物网站，邀请小明进行试用，小明输入用户名与密码进行登录
+
+然后小明想查看自己的购物车，发现又要进行登录，不仅如此每一次请求都要进行登录
+
+小明脑子里有一个大大的问号
+
+**** 你知道这个世界上有一个东西叫做 session 吗
+[[file:./images/user-server.png]]
+
+用户每次登录都会在服务器端保留一个 session 记录，用于后续的验证身份
+
+**** 我的服务器撑不住了
+由于用户越来越多，一台机器无法保存过多的 session，于是小明的朋友增加了两台服务器然后在服务器间进行 session 的同步
+
+[[file:images/multi-session.png]]
+
+**** 请使用万兆网络 + SSD
+小明的朋友发现了许多问题
+
+1.多个服务之间的 session 同步造成了数据冗余，同时会消耗带宽
+
+2.如何保证 session 同步的快速与准确
+
+小明的朋友甚至考虑上一套 TIDB
+
+可惜没有万兆网络与 SSD 无奈之下放弃了这套方案转而向小明求助
+**** 你听说过烘焙吗
+小明给朋友提出了一个更加靠谱的方案
+
+cookie + session
+
+[[file:images/cookie-session.png]]
+
+1.用户第一进行登录时会在服务器端生成一个 session 然后设置一个过期时间, 同时给客户端创建一个加密后的 cookie
+
+2.之后用户登录，会在请求头带上 cookie 的相关信息将请求发送到应用服务器
+
+3.应用服务器进行接密后，然后进行校验后进行下一步操作
+** StatefulSet (sts)
+   StatefulSet 是 kubernetes 中为了管理有状态的服务而设计出的一种资源
+*** 特点
+   StatefulSet 所管理的 pod 拥有固定的名字 同时会按照顺序启动
+
+   在与 service 产生交互时，使用的是 healess service
+
+   直接将 pod name 注册到 dns server，没有负载均衡
+*** 场景
+    1.固定 POD IP
+    2.需要绑定存储
+    3.有序的扩展
+    4.有序的滚动升级
+*** example
+microk8s 需要启动 storage
+#+BEGIN_SRC yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /mnt/disk/vol1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - vagrant
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv-2
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /mnt/disk/vol2
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - vagrant
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: nginx
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  serviceName: "nginx"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+    - metadata:
+        name: www
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: local-storage
+        resources:
+          requests:
+            storage: 1Gi
+#+END_SRC
+** Cloud-Native
+*** DevOps
+    DevOps是软件开发人员与IT运营部门之间的协作，其目标是不断交付可解决客户挑战的高质量软件。
+
+    它具有创造一种文化和环境的潜力，在该文化和环境中，可以快速，频繁且更一致地进行软件的构建，测试和发布。
+
+    在敏捷产品开发实践的支持下，持续交付意味着通过自动化将小批软件不断交付生产。
+
+    持续交付使发布变得迟钝而可靠，从而组织可以以更低的风险频繁交付，并更快地从最终用户那里获得反馈。
+*** Microservices
+    微服务是一种将应用程序开发为一组小服务的体系结构方法。每个服务都实现业务功能，在其自己的流程中运行并通过HTTP API或消息传递进行通信。
+
+    每个微服务都可以独立于应用程序中的其他服务进行部署，升级，扩展和重新启动，通常作为自动化系统的一部分，从而可以对实时应用程序进行频繁更新而不会影响最终客户
+*** Container
+    与标准虚拟机（VM）相比，容器提供了效率和速度。使用操作系统（OS）级虚拟化，单个OS实例可以动态地划分到一个或多个隔离的容器中，
+
+    每个容器具有唯一的可写文件系统和资源配额。在单个VM中创建和销毁容器的低开销以及高包装密度使容器成为部署单个微服务的理想计算工具
+** 课后作业
+1.部署 example 中的 yaml
+2.查看每个 pod 的 hostname
+#+BEGIN_SRC
+for i in 0 1; do kubectl exec web-$i -- sh -c 'hostname'; done
+#+END_SRC
+3.启动一个新的 deploy 在新启动的 pod 内部查看 dns 记录并对比相应的 sts pod 的信息
+   #+BEGIN_SRC
+   nslookup web-01.nginx
+   #+END_SRC
+4.将副本数改为 0, pod 在销毁时是否有顺序?
 * WIP
 ** Service Loadbalanceing and Networking
 ** Storage
@@ -844,3 +1037,5 @@ microk8s.start/microk8s.stop
 #+BEGIN_SRC
 microk8s.kubectl
 #+END_SRC
+** 部署一个 wordpress
+   https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
