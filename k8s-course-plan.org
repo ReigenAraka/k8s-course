@@ -951,10 +951,224 @@ for i in 0 1; do kubectl exec web-$i -- sh -c 'hostname'; done
    nslookup web-1.nginx
    #+END_SRC
 4.将副本数改为 0, pod 在销毁时是否有顺序?
+* Service Loadbalanceing and Networking <2020-01-10 Fri> <2020-01-17 Fri>
+** 课程大纲
+- [ ] 了解 kubernetes service 的相关概念
+- [ ] 了解 ingress 的相关概念
+- [ ] 简单了解 kubernetes 中的 dns
+** 为什么在 kubernetes 中需要 service
+*** 今天不说小明的故事，今天来讲一个工具人的故事
+工具人有几个很重要的特点:
+1.用完就扔
+
+2.有事情才来看看你，没事情从来不看你
+
+3.随叫随到
+
+4.可替代性很强
+*** Pod: 正是在下
+Pod 具有工具人的绝大部分的特点，但是 Pod 有很大的问题，在通常情况下 pod 每次重新启动后，
+
+Pod 的 IP 会发生变化，在除了 statefulset 管理的 pod，名字也会发生改变
+
+这样就有一点不舒服了，一个工具人还想让我每次再找一遍？
+
+*** 如何找到合适的工具人
+service 就是用来找工具人的一种绝佳方式
+
+kubernetes 中有几种办法可以连通 pod 而不关心 pod 是否被重启过
+
+1.通过 service 进行访问
+
+2.直接通过 Dns 进行访问 (headless service)
+
+3.固定 Pod ip
+
+** Service 如何找到 pod 的
+#+BEGIN_SRC yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+spec:
+  selector:
+    matchLabels:
+      run: my-nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: my-nginx
+    spec:
+      containers:
+      - name: my-nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx
+  labels:
+    run: my-nginx
+spec:
+  type: ClusterIP
+  ports:
+  - port: 30010
+    targetPort: 80
+    protocol: TCP
+  selector:
+    run: my-nginx
+#+END_SRC
+
+通过 selector, 与其他的资源一样, service 也是通过 selector 与 label 的方式连接到 pod 上
+
+service 也可以连接到非 pod 的其他资源上,这种情况下是不会创建 endpoint 的
+
+*** endpoint 与 Endpoint slices
+
+**** endpoint
+endpoint 中保存了 pod 的 ip 端口,所在机器, namespace 的信息
+
+可以说 endpoint 的才是实际上对 pod 的网络信息进行记录与及时更改的资源
+
+而 service 则是对 kubernetes 网络连接的抽象
+
+#+BEGIN_SRC shell
+kubectl get ep
+#+END_SRC
+
+在这里你可以发现 service 与 endpoint 的是一一对应的,那么他们是怎么进行关联的?
+**** endpoint slices
+endpoint slices 是 1.17 中新加入的特性
+
+他在概念上与 endpoint 非常的像, 他的存在是给 endpoint 提供更多的扩展选项
+
+endpointslice 将所有满足 selector 标签的 endpoint 组合起来,更方便进行管理
+
+#+BEGIN_SRC yaml
+apiVersion: discovery.k8s.io/v1beta1
+kind: EndpointSlice
+metadata:
+  name: example-abc
+  labels:
+    kubernetes.io/service-name: example
+addressType: IPv4
+ports:
+  - name: http
+    protocol: TCP
+    port: 80
+endpoints:
+  - addresses:
+    - "10.1.2.3"
+    conditions:
+      ready: true
+    hostname: pod-1
+    topology:
+      kubernetes.io/hostname: node-1
+      topology.kubernetes.io/zone: us-west2-a
+#+END_SRC
+
+** Service 的几种类型
+*** ClusterIP
+ClusterIP 是默认的类型，仅能在集群内部进行访问
+
+ClusterIP 的几种实现方式会在之后将 kube-proxy 原理时将
+
+在集群内部可以通过 clusterip:port 访问服务
+#+BEGIN_SRC shell
+curl clusterip:port
+#+END_SRC
+*** NodePort
+Nodeport 的方式是使用机器的固定端口,如果集群内有多个机器,那么要求所有机器上的这个端口都没有被占用
+
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx-node-port
+  labels:
+    run: my-nginx
+spec:
+  type: NodePort
+  ports:
+  - port: 30010
+    nodeport: 30010
+    targetPort: 80
+    protocol: TCP
+  selector:
+    run: my-nginx
+#+END_SRC
+
+Nodeport 是 ClusterIP 的一种扩展,NodePort 会自动的创建一个 ClusterIP
+
+同时也可以使用这个 ClusterIP 进行访问
+*** LoadBalancer
+LoadBalancer 模式的 service 较为特殊会在之后将 ccm 的时候将
+*** ExternalName
+ExternalName 类型的 Service 为外部 DNS 名称提供内部别名。
+
+内部客户端使用内部 DNS 名称发出请求，然后请求会被重定向到外部名称
+
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-xn-service
+spec:
+  type: ExternalName
+  externalName: example.com
+#+END_SRC
+
+创建 Service 时，Kubernetes 会创建一个 DNS 名称，内部客户端可以使用该名称来调用 Service。
+
+对于上述示例，DNS 名称是 my-xn-service.default.svc.cluster.local。
+
+当内部客户端向 my-xn-service.default.svc.cluster.local 发出请求时，请求会被重定向到 example.com。
+
+ExternalName Service 类型与其他 Service 类型完全不同。
+
+ExternalName 类型的 Service 不与一组 Pod 相关联，也没有稳定的 IP 地址。
+
+相反，ExternalName 类型的 Service 从内部 DNS 名称映射到外部 DNS 名称。
+*** Headless
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: nginx
+#+END_SRC
+在无状态时将的 headless 的访问模式,如果现式的指定 clusterIP 为 None
+
+那他将是一个 Headless 的服务
+
+Headless 使用的是在 statefulset 中的使用方式相同
+
+** Ingress
+** Network policies
+** IPv4/IPv6
+** 课后作业
+1.创建一个 clusterIP 的 service，指向一个 nginx 和一个 2048
+
+2.集群内访问这个 service,会发生什么
+
+3.将这个 service 的类型改为 NodePort 并使用 40010 端口
+
+4.从集群外通过 node:port 的方式访问这个 service
 * WIP
-** Service Loadbalanceing and Networking
 ** Storage
-** Security
+** kubernetes 实践
 ** 初识 kubernetes 组件
 *** 课程大纲
 - [ ] 了解 kubernetes 有哪些组件
@@ -968,6 +1182,11 @@ for i in 0 1; do kubectl exec web-$i -- sh -c 'hostname'; done
 **** etcd
 **** core-dns
 *** Links
+** kubernetes 开发
+***  何开发一个 operator
+***  何开发一个 CCM
+***  何实现一个 CNI
+***  定义一个 scheduler
 * 最佳实践
 ** 如何最快的准备一个单节点 k8s 集群
 *** 前言
