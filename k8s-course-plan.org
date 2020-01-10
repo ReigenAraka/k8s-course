@@ -1095,7 +1095,7 @@ spec:
   type: NodePort
   ports:
   - port: 30010
-    nodeport: 30010
+    nodePort: 30010
     targetPort: 80
     protocol: TCP
   selector:
