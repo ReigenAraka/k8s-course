@@ -1155,9 +1155,125 @@ spec:
 
 Headless 使用的是在 statefulset 中的使用方式相同
 
-** Ingress
+** Ingress 与 Ingress controller
+ingress 是用来打通外界网络到内部 service 的
+
+[[file:./images/ingress.png]]
+
+如果说 service 管理的是四层的流量,那么 ingress 管理的则是七层的流量
+
+#+BEGIN_SRC yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+  - host: api.mydomain.com
+    http:
+      paths:
+      - backend:
+          serviceName: api
+          servicePort: 80
+  - host: domain.com
+    http:
+      paths:
+      - path: /web/*
+        backend:
+          serviceName: web
+          servicePort: 8080
+  - host: backoffice.domain.com
+    http:
+      paths:
+      - backend:
+          serviceName: backoffice
+          servicePort: 8080
+#+END_SRC
+
+ingress 这种资源依赖于外界的 ingress controller 实现
+
+如果你没有启用任何的 ingress controller 那么你即使访问了相应的 URL 也没有作用
+
+可以在 https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/ 这里找到主流的 ingress controller
+
+最常使用的是 ingress-nginx
+
+简单的介绍一下实现原理
+
+0.当集群中部署了 ingress-nginx 之后
+
+1.当用户创建了一个 ingress 资源,会被 ingress-nginx 监听到
+
+2.nginx-ingress 会写入 nginx 的规则并进行 reload
+
+3.如果需要启动 TLS 需要自己生成证书然后将证书写入到 ingress-nginx 的配置当中
 ** Network policies
+network pilicy 用来帮助 pod 隔离流量
+
+简单的理解为给 pod 建立一个白名单
+#+BEGIN_SRC yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 172.17.0.0/16
+        except:
+        - 172.17.1.0/24
+    - namespaceSelector:
+        matchLabels:
+          project: myproject
+    - podSelector:
+        matchLabels:
+          role: frontend
+    ports:
+    - protocol: TCP
+      port: 6379
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.0.0.0/24
+    ports:
+    - protocol: TCP
+      port: 5978
+#+END_SRC
+
+流量控制支持 SCTP (Stream Control Transmission Protocol): 需要额外开启 --feature-gates=SCTPSupport=true
 ** IPv4/IPv6
+IPv6 的支持需要在 kubelet  kube-controller  kube-proxy 开启相关参数
+
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  ipFamily: IPv6
+  selector:
+    app: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+#+END_SRC
+
+然后指定 ipFamily 后进行 IPv6 的分配
+
+IPv4 与 IPv6 的比较可以看
+
+https://www.ibm.com/support/knowledgecenter/zh/ssw_ibm_i_72/rzai2/rzai2compipv4ipv6.htm
 ** 课后作业
 1.创建一个 clusterIP 的 service，指向一个 nginx 和一个 2048
 
@@ -1166,6 +1282,10 @@ Headless 使用的是在 statefulset 中的使用方式相同
 3.将这个 service 的类型改为 NodePort 并使用 40010 端口
 
 4.从集群外通过 node:port 的方式访问这个 service
+
+5.启用 nginx ingress 并且创建一个 ingress 资源代理上一步的 service;域名为 api.mydomain.com
+
+6.修改 HTTP 的 HOST 头或者修改 /etc/hosts 文件后访问 api.mydomain.com
 * WIP
 ** Storage
 ** kubernetes 实践
