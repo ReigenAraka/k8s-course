@@ -1243,7 +1243,7 @@ spec:
       port: 6379
   egress:
   - to:
-    - ipBlock:
+  - ipBlock:
         cidr: 10.0.0.0/24
     ports:
     - protocol: TCP
@@ -1286,8 +1286,244 @@ https://www.ibm.com/support/knowledgecenter/zh/ssw_ibm_i_72/rzai2/rzai2compipv4i
 5.启用 nginx ingress 并且创建一个 ingress 资源代理上一步的 service;域名为 api.mydomain.com
 
 6.修改 HTTP 的 HOST 头或者修改 /etc/hosts 文件后访问 api.mydomain.com
+* Storage
+** 课程大纲
+- [ ] 了解 pv pvc Storage Class 的相关概念
+- [ ] 了解 CSI 的相关概念
+** 从删库跑路到数据恢复
+*** 数据的保存
+从 3.5 英寸的软盘到机械硬盘再到 SSD,存储技术不断的在追求速度的进步
+
+那是否思考过一个问题，为什么存储一直试图在速度上寻找突破？
+
+因为它生来就是为了持久化的保存数据
+
+持久化的保存数据就面临着一个重要的问题，数据丢了怎么办？
+
+甲: 一块硬盘坏了
+
+乙: 做RAID
+
+甲: RAID 卡断电了
+
+乙: 多组 RAID 保存
+
+甲: 机房炸了
+
+乙: 两地三中心的部署方案
+
+甲: 世界大战导致城市消失
+
+乙: 把数据存到胶卷中，然后在北极挖个矿井
+
+甲: 地球毁灭了
+
+乙: 发个卫星存到轨道站
+
+乙: 地球都毁灭了，你还要这些数据干嘛
+*** 给容器用的存储方案
+就像我们之前将过的，容器本质上是一个进程，他没有自己的文件系统，自然无法存储数据
+
+而且容器声明周期并不会很长，同时还有很强的流动性
+
+那么动态的分配存储与文件持久化就成了容器存储要考虑的问题
+** Volumes
+*** kubernetes 支持的存储卷
+kubernetes 支持多种存储卷,下面举几个常用的例子
+1.local
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: example-pv
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: /mnt/disks/ssd1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - example-node
+#+END_SRC
+2.nfs
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs
+spec:
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: nfs-server.default.svc.cluster.local
+    path: "/"
+#+END_SRC
+3.awsElasticBlockStore
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-ebs
+spec:
+  containers:
+  - image: k8s.gcr.io/test-webserver
+    name: test-container
+    volumeMounts:
+    - mountPath: /test-ebs
+      name: test-volume
+  volumes:
+  - name: test-volume
+    # This AWS EBS volume must already exist.
+    awsElasticBlockStore:
+      volumeID: <volume-id>
+      fsType: ext4
+#+END_SRC
+*** CSI
+Container Storage Interface 容器存储接口, 通过 CSI 可以定义自己的一个存储驱动
+#+BEGIN_SRC grpc
+service Identity {
+  rpc GetPluginInfo(GetPluginInfoRequest)
+    returns (GetPluginInfoResponse) {}
+
+  rpc GetPluginCapabilities(GetPluginCapabilitiesRequest)
+    returns (GetPluginCapabilitiesResponse) {}
+
+  rpc Probe (ProbeRequest)
+    returns (ProbeResponse) {}
+}
+
+service Controller {
+  rpc CreateVolume (CreateVolumeRequest)
+    returns (CreateVolumeResponse) {}
+
+  rpc DeleteVolume (DeleteVolumeRequest)
+    returns (DeleteVolumeResponse) {}
+
+  rpc ControllerPublishVolume (ControllerPublishVolumeRequest)
+    returns (ControllerPublishVolumeResponse) {}
+
+  rpc ControllerUnpublishVolume (ControllerUnpublishVolumeRequest)
+    returns (ControllerUnpublishVolumeResponse) {}
+
+  rpc ValidateVolumeCapabilities (ValidateVolumeCapabilitiesRequest)
+    returns (ValidateVolumeCapabilitiesResponse) {}
+
+  rpc ListVolumes (ListVolumesRequest)
+    returns (ListVolumesResponse) {}
+
+  rpc GetCapacity (GetCapacityRequest)
+    returns (GetCapacityResponse) {}
+
+  rpc ControllerGetCapabilities (ControllerGetCapabilitiesRequest)
+    returns (ControllerGetCapabilitiesResponse) {}
+
+  rpc CreateSnapshot (CreateSnapshotRequest)
+    returns (CreateSnapshotResponse) {}
+
+  rpc DeleteSnapshot (DeleteSnapshotRequest)
+    returns (DeleteSnapshotResponse) {}
+
+  rpc ListSnapshots (ListSnapshotsRequest)
+    returns (ListSnapshotsResponse) {}
+
+  rpc ControllerExpandVolume (ControllerExpandVolumeRequest)
+    returns (ControllerExpandVolumeResponse) {}
+}
+
+service Node {
+  rpc NodeStageVolume (NodeStageVolumeRequest)
+    returns (NodeStageVolumeResponse) {}
+
+  rpc NodeUnstageVolume (NodeUnstageVolumeRequest)
+    returns (NodeUnstageVolumeResponse) {}
+
+  rpc NodePublishVolume (NodePublishVolumeRequest)
+    returns (NodePublishVolumeResponse) {}
+
+  rpc NodeUnpublishVolume (NodeUnpublishVolumeRequest)
+    returns (NodeUnpublishVolumeResponse) {}
+
+  rpc NodeGetVolumeStats (NodeGetVolumeStatsRequest)
+    returns (NodeGetVolumeStatsResponse) {}
+
+
+  rpc NodeExpandVolume(NodeExpandVolumeRequest)
+    returns (NodeExpandVolumeResponse) {}
+
+
+  rpc NodeGetCapabilities (NodeGetCapabilitiesRequest)
+    returns (NodeGetCapabilitiesResponse) {}
+
+  rpc NodeGetInfo (NodeGetInfoRequest)
+    returns (NodeGetInfoResponse) {}
+}
+#+END_SRC
+** PV PVC and Storage Class
+*** PV PVC 的概念
+PV 全名 PersistentVolume PVC 全名 PersistentVolumeClaim
+
+PV 是 k8s 中用来管理集群中的存储资源,PV 的意义在于将存储的声明周期独立与 pod 的生命周期
+
+PVC 是 k8s 中管理用户存储请求的资源，PVC 可以向 PV 请求特定的大小与访问模式
+*** 创建一个 PV 与 PVC
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/mnt/data"
+#+END_SRC
+
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+#+END_SRC
+*** Storage Class
+一个 PV 只能被一个 PVC 绑定,那么在有的场景下需要动态的创建 pvc 进行 pod 的绑定
+1.事先创建好大量的 pv
+2.使用 storage Class 进行动态的创建与绑定
+*** 创建一个 Storage Class
+#+BEGIN_SRC yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+#+END_SRC
+[[file:images/pv-pvc.png]]
 * WIP
-** Storage
 ** kubernetes 实践
 ** 初识 kubernetes 组件
 *** 课程大纲
