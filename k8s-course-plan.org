@@ -1613,7 +1613,7 @@ microk8s.kubectl
 #+END_SRC
 ** 部署一个 wordpress
 Wordppress 需要启动两个 pod, mysql 与 wordpress
-[[file:./wordpress-mysql.jpeg]]
+[[file:./images/wordpress-mysql.jpeg]]
 *** 创建 mysql 的相关资源
 **** 创建 StorageClass
 #+BEGIN_SRC yaml
