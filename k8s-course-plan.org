@@ -1286,7 +1286,7 @@ https://www.ibm.com/support/knowledgecenter/zh/ssw_ibm_i_72/rzai2/rzai2compipv4i
 5.启用 nginx ingress 并且创建一个 ingress 资源代理上一步的 service;域名为 api.mydomain.com
 
 6.修改 HTTP 的 HOST 头或者修改 /etc/hosts 文件后访问 api.mydomain.com
-* Storage
+* Storage <2020-03-23 Mon>
 ** 课程大纲
 - [ ] 了解 pv pvc Storage Class 的相关概念
 - [ ] 了解 CSI 的相关概念
@@ -1524,7 +1524,6 @@ volumeBindingMode: WaitForFirstConsumer
 #+END_SRC
 [[file:images/pv-pvc.png]]
 * WIP
-** kubernetes 实践
 ** 初识 kubernetes 组件
 *** 课程大纲
 - [ ] 了解 kubernetes 有哪些组件
@@ -1613,4 +1612,208 @@ microk8s.start/microk8s.stop
 microk8s.kubectl
 #+END_SRC
 ** 部署一个 wordpress
-   https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
+Wordppress 需要启动两个 pod, mysql 与 wordpress
+[[file:./wordpress-mysql.jpeg]]
+*** 创建 mysql 的相关资源
+**** 创建 StorageClass
+#+BEGIN_SRC yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: mysql
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+#+END_SRC
+**** 创建 service
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wordpress
+    tier: mysql
+#+END_SRC
+**** 创建 PV
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wordpress-mysql
+spec:
+  capacity:
+    storage: 20Gi
+  storageClassName: mysql
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/lab/mysql
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - vagrant
+#+END_SRC
+**** 创建 PVC
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-mysql-pvc
+  labels:
+    app: wordpress
+spec:
+  storageClassName: mysql
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+#+END_SRC
+**** 创建 Mysql 的 deployment
+#+BEGIN_SRC yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mysql
+    spec:
+      containers:
+      - image: daocloud.io/library/mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: thisisnotapassword
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: wordpress-mysql-pvc
+#+END_SRC
+*** 创建 wordpress 的相关资源
+**** 创建 service
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: wordpress
+    tier: frontend
+  type: NodePort
+#+END_SRC
+**** 创建 PV
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wordpress
+spec:
+  capacity:
+    storage: 20Gi
+  storageClassName: mysql
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/lab/wordpress
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - vagrant
+#+END_SRC
+**** 创建 PVC
+#+BEGIN_SRC yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-pvc
+  labels:
+    app: wordpress
+spec:
+  storageClassName: mysql
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+#+END_SRC
+**** 创建 wordpress 的 deployment
+#+BEGIN_SRC yaml
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: frontend
+    spec:
+      containers:
+      - image: wordpress:4.8-apache
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: thisisapassword
+        ports:
+        - containerPort: 80
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-persistent-storage
+        persistentVolumeClaim:
+          claimName: wordpress-mysql-pvc
+#+END_SRC
+*** 注意事项
+1.创建 PV 时保证 nodeaffinity 中的 values 是主机名
+2.上面共有 5 处错误
