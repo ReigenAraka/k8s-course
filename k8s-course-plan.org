@@ -6,9 +6,6 @@
 * 课程目的
   - 可以独立安装 k8s 集群
   - 可以简单运维 k8s 集群
-  - 了解 k8s 组件与代码结构
-  - 对云计算及生态有初步认识
-  - 具备通过 ckad 的能力
 ** 进阶要求
   - 可以实现一个 CNI/CRD/CCM
   - 成为 k8s contributor
@@ -1523,25 +1520,6 @@ provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 #+END_SRC
 [[file:images/pv-pvc.png]]
-* WIP
-** 初识 kubernetes 组件
-*** 课程大纲
-- [ ] 了解 kubernetes 有哪些组件
-- [ ] 简介 kubernetes 内的对象与资源
-*** kubernetes 的组件
-**** kubelet
-**** api-server
-**** kube-controller
-**** scheduler
-**** kube-proxy
-**** etcd
-**** core-dns
-*** Links
-** kubernetes 开发
-***  何开发一个 operator
-***  何开发一个 CCM
-***  何实现一个 CNI
-***  定义一个 scheduler
 * 最佳实践
 ** 如何最快的准备一个单节点 k8s 集群
 *** 前言
