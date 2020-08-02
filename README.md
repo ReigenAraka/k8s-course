@@ -1,3 +1,4 @@
+![GitHub](https://img.shields.io/github/license/ReigenAraka/k8s-course)
 # How to use
 
 
