@@ -1795,3 +1795,142 @@ spec:
 *** 注意事项
 1.创建 PV 时保证 nodeaffinity 中的 values 是主机名
 2.上面共有 5 处错误
+** 创建一个最小的 Operator
+*** CustomResource 与 Operator
+
+自定义资源是 k8s API 的扩展，通过自定义资源可以使用 k8s api 来控制自己的服务
+
+Operator 最早是 coreOS 提出的一种模式，通过代码的方式来简单的运维服务
+
+**** 为什么 Operator 离不开 CustomResource
+Operators are software extensions to Kubernetes that make use of custom resources to manage applications and their components.
+
+CustomResource 是 Operator 用来与 k8s 沟通的桥梁
+
+*** 如何实现一个自定义的资源
+实现一个自定义的资源有两种方式
+**** CRD
+下方是通过 yaml 创建的 CRD
+#+BEGIN_SRC yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  # name must match the spec fields below, and be in the form: <plural>.<group>
+  name: milvuses.zilliz.com
+spec:
+  # group name to use for REST API: /apis/<group>/<version>
+  group: zilliz.com
+  # list of versions supported by this CustomResourceDefinition
+  versions:
+    - name: v1
+      # Each version can be enabled/disabled by Served flag.
+      served: true
+      # One and only one version must be marked as the storage version.
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                milvusSpec:
+                  type: string
+                image:
+                  type: string
+                replicas:
+                  type: integer
+  # either Namespaced or Cluster
+  scope: Namespaced
+  names:
+    # plural name to be used in the URL: /apis/<group>/<version>/<plural>
+    plural: milvuses
+    # singular name to be used as an alias on the CLI and for display
+    singular: milvus
+    # kind is normally the CamelCased singular type. Your resource manifests use this.
+    kind: Milvus
+    # shortNames allow shorter string to match your resource on the CLI
+    shortNames:
+    - mi
+
+#+END_SRC
+**** AA (Aggregated API)
+CRD 是将资源注册到 k8s 当中，AA 则是将自定义的资源放到自己实现的 API Server 中
+
+AA 必须使用 go 开发，并且提供相应的镜像
+
+AA 可以提供更丰富的功能，可以看作独立实现的 API 服务，提供更丰富的功能：如改变存储方式、提供更多命令的支持、不同的协议
+*** 在集群中创建一个 milvus
+#+BEGIN_SRC yaml
+apiVersion: "zilliz.com/v1"
+kind: Milvus
+metadata:
+  name: milvus-crd-test
+spec:
+  milvusSpec: "this is milvus spec"
+  image: milvusdb/milvus
+#+END_SRC
+
+*** 如何实现一个 Operator
+在实现一个 operator 之前先想一个问题，这个 operator 的功能，这一次我们要做的是最简单的一个功能
+
+当创建了一个 milvus 资源的时候，在默认的 namespace 下启动一个 milvus 实例
+
+实现一个 Operator 有两种方式
+
+1. 使用框架如 kubebuilder operator-framework
+
+2. 使用 dynamicClient 写一个
+
+先说为什么有两种方式:
+由于 k8s 官方钦点的 go-client 中如果想要识别自定义资源，有两种方式：
+1.按照格式来生成一堆代码与结构，并将资源注册到 apiserver。这种方式需要生成很多代码,现有的框架也都是为了这种模式服务的
+2.使用 dynamicClient 可以最快速度的调试代码,因为 dynamicClient 本质上是对 k8s REST client 的封装
+
+关于 kubebuilder 框架之类的内容会在之后讲到，这里来讲如何实现一个最小的 operator 详细代码可以参考 https://github.com/41tair/milvus-operator-example
+
+1.从 k8s 集群中获取到 CR 的信息
+#+BEGIN_SRC go
+func milvusGVR() schema.GroupVersionResource{
+        return schema.GroupVersionResource{
+                Group: "zilliz.com",
+                Version: "v1",
+                Resource: "milvuses",
+        }
+}
+
+func milvusList(client dynamic.Interface) []unstructured.Unstructured{
+        milvusInstances, _ := client.Resource(milvusGVR()).Namespace("default").List(context.TODO(), metav1.ListOptions{})
+        return milvusInstances.Items
+}
+
+#+END_SRC
+2.从 k8s 集群中获取到当前的 pod
+#+BEGIN_SRC go
+func milvusPods(client *kubernetes.Clientset) []v1.Pod{
+        pods, _ := client.CoreV1().Pods("default").List(context.TODO(), metav1.ListOptions{})
+        return pods.Items
+}
+
+#+END_SRC
+
+3.在启动时开启循环定时进行比对并创建没有被创建的 pod
+#+BEGIN_SRC go
+func mainLoop(clientset *kubernetes.Clientset, milvusList []unstructured.Unstructured, pods []v1.Pod) {
+        var waitForCreate []MilvusIns
+        for _, milvus := range milvusList {
+                name := milvus.Object["metadata"].(map[string]interface{})["name"].(string)
+                image := milvus.Object["spec"].(map[string]interface{})["image"].(string)
+                if existInPods(name, pods) != true {
+                        waitForCreate = append(waitForCreate, MilvusIns{
+                                Name: name,
+                                Image: image,
+                        })
+                }
+        }
+        for _, m := range waitForCreate {
+                createMilvusPod(clientset, m.Name, m.Image)
+        }
+
+}
+#+END_SRC
